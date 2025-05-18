@@ -1,0 +1,13 @@
+@use '../../../assets/styles/variables' as *;
+
+.contactList{
+  width: 250px;
+  background: $color-surface;
+  padding: 20px;
+  border-right: 1px solid $color-border;
+
+  h2{
+    font-size: $font-size-h2;
+    padding-bottom: 20px;
+  }
+}

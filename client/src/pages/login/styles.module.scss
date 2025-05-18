@@ -1,0 +1,73 @@
+@use '../../assets/styles/variables' as *;
+@use '../../assets/styles/mixins' as *;
+
+.loginContainer {
+	display: flex;
+	width: 100%;
+	height: 100vh;
+
+	.rightBlock {
+		width: 40%;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		
+		.loginForm{
+			position: relative;
+			text-align: center;
+			border-radius: 15px;
+			border: 1px solid $color-dark-grey;
+
+			.rightHeading{
+				position: absolute;
+				top: -30px;
+				left: 50%;
+				transform: translateX(-50%);
+				padding: 10px;
+				background-color: $color-bg;
+			}
+
+		}
+
+		input{
+			width: 100%;
+			margin-bottom: 20px;
+		}
+
+		.loginButton {
+			width: 100%;
+			padding: 10 10px;
+			border: 1px solid $color-dark-grey;
+
+			&:hover,
+			&:active,
+			&:focus {
+				background: transparent;
+				color: $color-secondary;
+				border: 1px solid $color-secondary;
+			}
+		}
+	}
+
+	.leftBlock {
+		width: 60%;
+		height: 100vh;
+		box-sizing: border-box;
+		background: linear-gradient($color-primary, $color-primary-alt);
+
+		.leftText {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			height: 100%;
+			align-items: center;
+			justify-content: center;
+
+			p {
+				font-weight: 400;
+			}
+		}
+	}
+}

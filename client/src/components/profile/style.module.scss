@@ -1,0 +1,79 @@
+@use '../../assets/styles/variables' as *;
+
+.profileWrapper{
+  min-width: 400px;
+  width: fit-content;
+  padding: 20px;
+
+  .profileTop{
+
+    .profileTitle{
+      margin-bottom: 10px;
+    }
+
+    .profileEditIcon{
+
+    }
+  }
+
+  .profileUser{
+    position: relative;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 25px 0;
+
+
+    .userTitle{
+      margin-bottom:8px;
+    }
+
+    .userEmail{
+      color: $color-muted;
+    }
+
+    &::after {
+      position: absolute;
+      bottom: 0;
+      content: ' ';
+      width: 100%;
+      height: 3px;
+      background-color: $color-border;
+    }
+  }
+
+  .profileInfo{
+
+    .profileInfoItems {
+      position: relative;
+      display: flex;
+      padding: 25px 0;
+      align-items: baseline;
+      justify-content: space-between;
+
+
+      &::after {
+        position: absolute;
+        bottom: 0;
+        content: ' ';
+        width: 100%;
+        height: 3px;
+        background-color: $color-border;
+      }
+    }
+  }
+
+  .profileButtonWrap{
+    padding: 25px 0;
+    width: 100%;
+
+    button{
+      width: 100%;
+      border: 1px solid $color-dark-grey;
+
+      &:hover, &:active {
+        background-color: transparent;
+      }
+    }
+  }
+}

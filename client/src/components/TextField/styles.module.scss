@@ -1,0 +1,40 @@
+@use '../../assets/styles/variables' as *;
+
+.input-group {
+  position: relative;
+  
+  input {
+    box-sizing: border-box;
+    padding: 15px 0px;
+    padding-left: 10px;
+    font-size: 16px;
+    background: transparent;
+    border: 1px solid $color-dark-grey;
+    transition: border .3s;
+
+    &:focus,
+    &:not(:placeholder-shown) {
+      outline: none;
+      border: 1px solid $color-secondary;
+      
+      + label {
+        top: -8px;
+        left: 8px;
+        font-size: 14px;
+        padding: 0 4px;
+        color: $color-secondary;
+        background: $color-bg;
+      }
+    }
+  }
+  
+  label {
+    position: absolute;
+    top: 17px;
+    left: 10px;
+    color: $color-muted;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+}

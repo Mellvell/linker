@@ -1,0 +1,29 @@
+@use '../../../../assets/styles/variables' as *;
+
+.contactItems{
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+  border: 2px solid $color-border;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  transition: background .3s;
+
+  .contactHeading{
+    margin-bottom: 5px;
+  }
+
+  .status{
+    color: $color-muted;
+
+  }
+  
+  .Active{
+    color: $color-success;
+  }
+
+  &:hover {
+    background: $color-dark-grey;
+  }
+}

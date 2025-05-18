@@ -1,0 +1,10 @@
+@use '../../../assets/styles/variables' as *;
+
+.emptyChat{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text;
+  font-size: 1.2rem;
+}

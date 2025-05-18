@@ -1,0 +1,5 @@
+class MessagesService{
+  async getMessages() {
+
+  }
+}

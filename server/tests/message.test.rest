@@ -1,0 +1,6 @@
+###
+GET http://localhost:5000/api/message/
+Authorization: Bearer {{"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcsIm5hbWUiOiJBZG1pbiIsInN1cm5hbWUiOiJBZG1pbjMiLCJlbWFpbCI6ImFkbWluM0BlbWFpbC5jb20iLCJ1c2VybmFtZSI6InVzZXJAODAxMjY2IiwiYXZhdGFyIjoiL3VzZXJAODAxMjY2L2F2YXRhci5wbmciLCJpYXQiOjE3NDcyMTc2ODMsImV4cCI6MTc0NzIxOTQ4M30.jdCi7YhVCSMS18wYkxsKfgzCXv6GT_frty4JqXAw-NU"}}
+
+###
+

@@ -1,0 +1,22 @@
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  border-right: 1px solid #333;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
