@@ -79,7 +79,7 @@ export default class Store {
 
 	async logout() {
 		try {
-			const response = await AuthService.logout()
+			await AuthService.logout()
 			localStorage.removeItem('token')
 			this.setAuth(false)
 			this.setUser({} as User)
@@ -102,9 +102,9 @@ export default class Store {
 		}
 	}
 
-	async getUsersForContactList() {
+	async getUsersForContactList(currentUserId: number):Promise<User[] | any> {
 		try {
-			const response = await UserService.getUsersForContactList()
+			const response = await UserService.getUsersForContactList(currentUserId)
 			if (response) {
 				this.setContacts(response.data)
 			}

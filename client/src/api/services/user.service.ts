@@ -17,22 +17,36 @@ export default class UserService {
 		}
 	}
 
-	static async getUsersForContactList(): Promise<
+	static async getUsersForContactList(currentUserId: number): Promise<
 		AxiosResponse<User[]> | undefined
 	> {
 		try {
 			const chatsResponse = await ChatService.getChats()
 			const chats = chatsResponse.data
-      
+
 			// Извлекаем все user2_id
 			const userIds = chats
-				.map(chat => chat.user2_id)
+				.map(chat => {
+					if(chat.user1_id === currentUserId) {
+						return chat.user2_id
+					}else if(chat.user2_id === currentUserId) {
+						return chat.user1_id
+					}else{ 
+						console.warn(
+							`Chat ${chat.id} does not involve current user ${currentUserId}`
+						)
+						return undefined
+					}
+				})
 				.filter(id => id !== undefined)
 
 			if (userIds.length === 0) {
 				console.log('No user IDs found in chats')
 				return undefined
 			}
+
+			console.log(userIds);
+			
 
 			// Выполняем запросы для каждого userId
 			const userPromises = userIds.map(userId =>

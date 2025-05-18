@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import EmptyChat from './EmptyChat/emptyChat'
 import ContactList from './ContactList/ContactList'
 import Contact from './ContactList/Contact/Contact'
@@ -13,12 +13,7 @@ const  ChatContainer = () => {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null)
 	const { store } = useContext(Context)
 
-	useEffect(() => {
-		const fetchContacts = async () => {
-			await store.getUsersForContactList()
-		}
-		fetchContacts()
-	}, [store])
+
 
 	return (
 		<div className={styles.chatContainer}>

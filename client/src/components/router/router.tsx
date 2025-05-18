@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Routes, Route } from 'react-router'
 import Layout from '../layout/layout'
 import Login from '../../pages/login'
@@ -10,7 +10,7 @@ import { useAuthRedirect } from '../../hooks/useAuthRedirect/useAuthRedirect'
 
 export default function Router() {
   useAuthRedirect()
-
+  
   return (
     <>
       <Routes> 

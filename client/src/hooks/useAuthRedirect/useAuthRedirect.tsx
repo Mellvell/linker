@@ -21,7 +21,9 @@ export function useAuthRedirect() {
 				if (!store.isAuth) {
 					navigate('/login')
 				} else {
+					store.getUsersForContactList(store.user.id).then(() => {
 					navigate('/')
+					})
 				}
 			})
 		}
