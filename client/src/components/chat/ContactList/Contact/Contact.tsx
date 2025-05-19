@@ -8,9 +8,9 @@ export default function Contact({
 	isOnline = true,
 	avatar,
 	onClick,
-}: ContactProps) {
+}: ContactProps) { 
 	return (
-		<div className={styles.contactItems} onClick={onClick}>
+		<div id={`${id}`} className={styles.contactItems} onClick={onClick}>
 			<div>
 				<Avatar avatar={avatar} maxWidth='50px'/>
 			</div>

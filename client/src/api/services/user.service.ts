@@ -45,9 +45,6 @@ export default class UserService {
 				return undefined
 			}
 
-			console.log(userIds);
-			
-
 			// Выполняем запросы для каждого userId
 			const userPromises = userIds.map(userId =>
 				api.get<User>(`/user/getUser/${userId}`)

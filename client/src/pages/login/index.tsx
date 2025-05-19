@@ -13,10 +13,10 @@ export default function Login() {
 
 	const navigate = useNavigate()
 
-	const {store} = useContext(Context)
+	const {authStore} = useContext(Context)
 
 	const handleLogin = (email: string, password: string) => {
-		store.login(email, password, navigate)
+		authStore.login(email, password, navigate)
 	}
 
 	return (

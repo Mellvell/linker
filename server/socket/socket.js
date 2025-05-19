@@ -2,6 +2,11 @@ const { Server } = require('socket.io')
 
 const socketToUserMap = new Map()
 
+const sendOnlineUsers = io => {
+	const onlineUsers = Array.from(socketToUserMap.keys())
+	io.emit('users:online', onlineUsers)
+}
+
 const initSocket = server => {
 	const io = new Server(server, {
 		cors: {
@@ -12,7 +17,7 @@ const initSocket = server => {
 
 	io.on('connection', socket => {
 		try {
-			const userId = socket.handshake.query.userId
+			const userId = socket.handshake.query.userId			
 			if (!userId) {
 				console.log('Socket connection rejected: No userId provided')
 				socket.disconnect()
@@ -21,10 +26,18 @@ const initSocket = server => {
 
 			socketToUserMap.set(userId, socket.id)
 			console.log(`User connected: ${socket.id}, userId: ${userId}`)
+			sendOnlineUsers(io)
+
+			socket.on('users:get', () => {
+				sendOnlineUsers(io)
+			})
+
+			socket.emit('say:hello', 'Hello from server!')
 
 			socket.on('disconnect', () => {
 				socketToUserMap.delete(userId)
 				console.log(`User disconnect: ${socket.id}`)
+				sendOnlineUsers(io)
 			})
 
 			socket.on('error', error => {
@@ -35,6 +48,8 @@ const initSocket = server => {
 			socket.disconnect()
 		}
 	})
+
+
 
 	return io
 }

@@ -2,21 +2,30 @@ import { createContext, StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.scss'
 import App from './App.tsx'
-import Store from './store/store.ts'
+
+import { authStore } from './store/auth.store.ts'
+import { userStore } from './store/user.store.ts'
+import { socketStore } from './store/socket.store.ts'
+
+import AuthStore from './store/auth.store.ts'
+import UserStore from './store/user.store.ts'
+import SocketStore from './store/socket.store.ts'
 
 interface IStore {
-	store: Store
+	authStore: AuthStore,
+	userStore: UserStore,
+	socketStore: SocketStore
 }
 
-const store = new Store()
-
 export const Context = createContext<IStore>({
-	store,
+	authStore,
+	userStore,
+	socketStore
 })
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<Context.Provider value={{ store }}>
+		<Context.Provider value={{ authStore, userStore, socketStore }}>
 			<App />
 		</Context.Provider>
 	</StrictMode>

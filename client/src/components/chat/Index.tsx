@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import EmptyChat from './EmptyChat/emptyChat'
 import ContactList from './ContactList/ContactList'
 import Contact from './ContactList/Contact/Contact'
@@ -6,25 +6,55 @@ import { observer } from 'mobx-react-lite'
 import Chat from './Chat/Chat'
 import styles from './styles.module.scss'
 import { Context } from '../../main'
-
 import type { User } from '../../types/api.types/user.types'
 
-const  ChatContainer = () => {
+const ChatContainer = observer(() => {
+	const { authStore, userStore, socketStore } = useContext(Context)
 	const [selectedUser, setSelectedUser] = useState<User | null>(null)
-	const { store } = useContext(Context)
 
+	useEffect(() => {
+		console.log('ChatContainer: checking if contacts need to be fetched', {
+			isAuth: authStore.isAuth,
+			isReady: authStore.isReady,
+			userId: authStore.user.id,
+			contactsLength: userStore.contacts.length,
+		})
+		if (
+			authStore.isAuth &&
+			authStore.isReady &&
+			authStore.user.id &&
+			!userStore.contacts.length
+		) {
+			console.log('ChatContainer: fetching contacts')
+			userStore.getUsersForContactList(authStore.user.id).then(() => {
+				console.log('ChatContainer: contacts fetched', userStore.contacts)
+			})
+			socketStore.init(authStore.user.id) // Инициализация WebSocket
+		}
+	}, [
+		authStore.isAuth,
+		authStore.isReady,
+		authStore.user.id,
+		userStore.contacts.length,
+	])
 
+	if (!authStore.isReady) return <div>Loading auth...</div>
+	if (userStore.isLoading) return <div>Loading contacts...</div>
+	if (userStore.error) return <div>Error: {userStore.error}</div>
 
 	return (
 		<div className={styles.chatContainer}>
 			<ContactList>
-				{ store.contacts.map(contact => (
-					<Contact 
+				{userStore.contacts.map(contact => (
+					<Contact
 						key={contact.id}
 						name={contact.name}
 						id={contact.id}
 						avatar={contact.avatar}
-						isOnline={false}
+						isOnline={
+							socketStore.isSocketReady &&
+							socketStore.onlineUserIds.includes(String(contact.id))
+						}
 						onClick={() => setSelectedUser(contact)}
 					/>
 				))}
@@ -36,6 +66,6 @@ const  ChatContainer = () => {
 			)}
 		</div>
 	)
-}
+})
 
-export default observer(ChatContainer)
+export default ChatContainer

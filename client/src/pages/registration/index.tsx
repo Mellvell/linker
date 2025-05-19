@@ -13,12 +13,12 @@ export default function Registration() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
-	const { store } = useContext(Context)	
+	const { authStore } = useContext(Context)	
 
 	const navigate = useNavigate()
 
 	const handleRegistration = (name: string, surname: string, email: string, password: string) => {
-		store.registration(name, surname, email, password, navigate)
+		authStore.registration(name, surname, email, password, navigate)
 	}
 
 	return (
