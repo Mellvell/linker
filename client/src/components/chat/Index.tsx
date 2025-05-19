@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { Context } from '../../main'
+
 import EmptyChat from './EmptyChat/emptyChat'
 import ContactList from './ContactList/ContactList'
 import Contact from './ContactList/Contact/Contact'
-import { observer } from 'mobx-react-lite'
 import Chat from './Chat/Chat'
+
 import styles from './styles.module.scss'
-import { Context } from '../../main'
 import type { User } from '../../types/api.types/user.types'
 
 const ChatContainer = observer(() => {
