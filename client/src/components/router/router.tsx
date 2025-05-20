@@ -11,7 +11,7 @@ import ProfilePage from '../../pages/profile'
 import Settings from '../../pages/settings'
 
 export default function Router() {
-  useAuthRedirect()
+  // useAuthRedirect()
   
   return (
     <>

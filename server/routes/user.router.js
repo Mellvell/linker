@@ -13,5 +13,6 @@ userRouter.post('/logout', userController.logout);
 userRouter.get('/refresh', userController.refresh); 
 
 userRouter.get('/getUser/:userId', authMiddleware, userController.getUser);
+userRouter.get('/getSearchUser', authMiddleware, userController.getSearchUser);
 
 module.exports = userRouter;

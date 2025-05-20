@@ -1,4 +1,4 @@
-const userService = require('../services/user.service');
+const userService = require('../services/user.service')
 
 class UserController {
 	async registration(req, res, next) {
@@ -43,7 +43,7 @@ class UserController {
 	async refresh(req, res, next) {
 		try {
 			const { refreshToken } = req.cookies
-			const token = await userService.refresh(refreshToken)			
+			const token = await userService.refresh(refreshToken)
 			res.cookie('refreshToken', token.refreshToken, {
 				maxAge: 30 * 24 * 60 * 60 * 1000,
 				httpOnly: true,
@@ -64,8 +64,21 @@ class UserController {
 		}
 	}
 
+	async getSearchUser(req, res, next) {
+		try {
+			console.log('getSearchUser')
+			const { query } = req.query // <-- исправлено
+			console.log(`search: ${query}`)
+
+			const users = await userService.getSearchUser(query) // <-- передаём query
+			return res.status(200).json(users)
+		} catch (error) {
+			next(error)
+		}
+	}
+
 	async update(req, res, next) {}
 	async delete(req, res, next) {}
 }
 
-module.exports = new UserController(); 
+module.exports = new UserController()

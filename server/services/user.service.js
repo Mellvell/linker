@@ -112,6 +112,18 @@ class UserService {
     return userDto;
   }
 
+  async getSearchUser(search) {
+    // if (search) {
+    //   throw ApiError.BadRequest('Пользователь не найден');
+    // }
+    const users = await pool.query(`SELECT * FROM users WHERE name ILIKE $1`, [`%${search}%`]);
+    if (users.rows.length === 0) {
+      throw ApiError.BadRequest('Пользователь не найден');
+    }
+    const userDto = users.rows.map(user => new UserDto(user));
+    return userDto;
+  }
+
 }
 
 module.exports = new UserService();
