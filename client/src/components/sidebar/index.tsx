@@ -1,8 +1,10 @@
-import React from 'react'
 import { NavLink } from 'react-router'
 import styles from './styles.module.scss'
-import Popup from '../popup'
-import Profile from '../profile'
+
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
 
 import SidebarItems from './sidebarItems'
 
@@ -12,17 +14,29 @@ export default function Sidebar() {
 			<div className={styles.logo}>Linker</div>
 			<nav className={styles.nav}>
 				<SidebarItems>
-					<Popup popupName='Profile'>
-						<Profile />
-					</Popup>
+					<NavLink to={'/profile'}>
+						<PersonOutlinedIcon /> Profile
+					</NavLink>
 				</SidebarItems>
 				<SidebarItems>
-					<p>Create group</p>
+					<NavLink to={'/'}>
+						<ChatBubbleOutlineOutlinedIcon />
+						Chats
+					</NavLink>
 				</SidebarItems>
 				<SidebarItems>
-					<p>Log out</p>
+					<NavLink to={'/settings'}>
+						<SettingsOutlinedIcon />
+						Settings
+					</NavLink>
 				</SidebarItems>
 			</nav>
+			<SidebarItems className={styles.logout}>
+				<NavLink to={'/logout'}>
+					<LogoutOutlinedIcon />
+					Logout
+				</NavLink>
+			</SidebarItems>
 		</aside>
 	)
 }

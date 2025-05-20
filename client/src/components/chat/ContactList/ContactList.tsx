@@ -9,7 +9,7 @@ const ContactList: React.FC<ContactListProps> = ({ children }) => {
 			<div>
 				<h2>Contacts</h2>
 			</div>
-			<div>{children}</div>
+			<div className={styles.contactWrap}>{children}</div>
 		</div>
 	)
 }

@@ -1,14 +1,12 @@
-import { useContext } from "react";
 import Sidebar from '../../components/sidebar'
-import { Context } from '../../main'
 import ChatContainer from '../../components/chat/Index'
 
-export default function Main() {
-	const { store } = useContext(Context)
+import styles from './styles.module.scss'
 
+export default function Main() {
   return (
-		<div>
-			{/* <Sidebar />	 */}
+		<div className={styles.container}>
+			<Sidebar />
 			<ChatContainer />
 		</div>
 	)

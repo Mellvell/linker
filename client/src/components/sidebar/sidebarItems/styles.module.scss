@@ -1,13 +1,33 @@
 @use '../../../assets/styles/variables' as *;
 
 .sidebarItems {
+  display: flex;
+  align-items: center;
   text-align: left;
-  padding: 10px;
   color: $color-text;
   text-decoration: none;
-  border: 1px solid $color-border;
-  border-radius: 8px;
   transition: background 0.2s;
+  position: relative;
+
+  &::before {
+    content: ' ';
+    height: 1px;
+    width: 100%;
+    background: $color-border;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &::after {
+    content: ' ';
+    height: 1px;
+    width: 100%;
+    background: $color-border;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
 
   &:hover {
     background-color: #2a2a3d;
@@ -18,4 +38,16 @@
     background-color: #3d3d5c;
     color: #fff;
   }
+
+  a {
+    width: 100%;
+    display: flex; // Делаем flex-контейнер для выравнивания иконки и текста
+    align-items: center; // Выравниваем по вертикали
+    padding: 20px;
+
+    svg {
+      margin-right: 10px; // Отступ между иконкой и текстом
+    }
+  }
+
 }

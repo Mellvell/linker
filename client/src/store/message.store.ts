@@ -53,7 +53,6 @@ class MessageStore {
 	}
 
 	async sendMessage(receiverId: number, message: string, chatId: number): Promise<void> {
-		this.setIsLoading(true)
 		this.setError(null)
 		try {
 			const response = await MessagesService.sendMessage(

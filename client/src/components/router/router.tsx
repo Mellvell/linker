@@ -7,6 +7,8 @@ import NotFound from '../../pages/notFound'
 import Main from '../../pages/main'
 
 import { useAuthRedirect } from '../../hooks/useAuthRedirect/useAuthRedirect'
+import ProfilePage from '../../pages/profile'
+import Settings from '../../pages/settings'
 
 export default function Router() {
   useAuthRedirect()
@@ -18,6 +20,8 @@ export default function Router() {
         <Route path='/registration' element={<Registration />} />
         <Route element={<Layout />}>
           <Route index element={<Main />} />
+          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/settings' element={<Settings />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

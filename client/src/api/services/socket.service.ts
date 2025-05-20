@@ -49,6 +49,7 @@ class SocketService {
 			console.log('❌ Socket disconnected')
 		})
 	}
+	
 	public on<T extends keyof SocketEvents>(event: T, callback: SocketEvents[T]) {
 		this.socket?.on(event, callback as any) 
 	}

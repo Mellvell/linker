@@ -1,11 +1,13 @@
+@use '../../assets/styles/variables' as *;
+
 .sidebar {
   width: 220px;
   height: 100vh;
-  padding: 20px;
+
   display: flex;
   flex-direction: column;
   gap: 40px;
-  border-right: 1px solid #333;
+  border-right: 1px solid  $color-border;
 }
 
 .logo {
@@ -17,6 +19,16 @@
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+}
+
+.logout {
+  margin-top: auto; 
+
+  a{
+
+    &:hover {
+      color: $color-error;
+    }
+  }
 }
 

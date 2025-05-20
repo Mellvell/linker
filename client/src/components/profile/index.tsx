@@ -7,7 +7,7 @@ import Input from '../input'
 
 export default function Profile() {
 	const [cheng, setCheng] = useState(false)
-	const { store } = useContext(Context)
+	const { authStore } = useContext(Context)
 
 	const [name, setName] = useState('')
 	const [surname, setSurname] = useState('')
@@ -24,12 +24,12 @@ export default function Profile() {
 				<h3 className={styles.profileTitle}>Profile</h3>
 			</div>
 			<div className={styles.profileUser}>
-				<Avatar avatar={store.user.avatar} maxWidth='90px' />
+				<Avatar avatar={authStore.user.avatar} maxWidth='90px' />
 				<div className={styles.userText}>
 					<h3 className={styles.userTitle}>
-						{store.user.name} {store.user.surname}
+						{authStore.user.name} {authStore.user.surname}
 					</h3>
-					<p className={styles.userEmail}>{store.user.email}</p>
+					<p className={styles.userEmail}>{authStore.user.email}</p>
 				</div>
 			</div>
 			<div className={styles.profileInfo}>
@@ -43,7 +43,7 @@ export default function Profile() {
 							value={name}
 						/>
 					) : (
-						<p>{store.user.name}</p>
+						<p>{authStore.user.name}</p>
 					)}
 				</div>
 				<div className={styles.profileInfoItems}>
@@ -51,7 +51,7 @@ export default function Profile() {
 					{cheng ? (
 						<Input type='text' placeholder='surname' />
 					) : (
-						<p>{store.user.surname}</p>
+						<p>{authStore.user.surname}</p>
 					)}
 				</div>
 				<div className={styles.profileInfoItems}>
@@ -59,7 +59,7 @@ export default function Profile() {
 					{cheng ? (
 						<Input type='text' placeholder='Username' />
 					) : (
-						<p>{store.user.username}</p>
+						<p>{authStore.user.username}</p>
 					)}
 				</div>
 				<div className={styles.profileInfoItems}>
@@ -67,7 +67,7 @@ export default function Profile() {
 					{cheng ? (
 						<Input type='text' placeholder='Email' />
 					) : (
-						<p>{store.user.email}</p>
+						<p>{authStore.user.email}</p>
 					)}
 				</div>
 			</div>
