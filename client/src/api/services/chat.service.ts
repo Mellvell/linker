@@ -9,7 +9,7 @@ export default class ChatService {
 	}
 
 	static async getChats(): Promise<AxiosResponse<Chat[]>>{
-		const response = await api.get('/chat/chats')
+		const response = await api.get('/chat/chats')		
 		return response
 	}
 

@@ -1,18 +1,20 @@
 import { useContext, useEffect, useState } from 'react'
-import { observer } from 'mobx-react-lite'
-import { Context } from '../../main'
-
 import EmptyChat from './EmptyChat/emptyChat'
 import ContactList from './ContactList/ContactList'
 import Contact from './ContactList/Contact/Contact'
+import { observer } from 'mobx-react-lite'
 import Chat from './Chat/Chat'
-
 import styles from './styles.module.scss'
+import { Context } from '../../main'
 import type { User } from '../../types/api.types/user.types'
 
 const ChatContainer = observer(() => {
-	const { authStore, userStore, socketStore } = useContext(Context)
-	const [selectedUser, setSelectedUser] = useState<User | null>(null)
+	const { authStore, userStore, socketStore, messageStore } =
+		useContext(Context)
+	const [selectedContact, setSelectedContact] = useState<{
+		user: User
+		chatId: number
+	} | null>(null)
 
 	useEffect(() => {
 		console.log('ChatContainer: checking if contacts need to be fetched', {
@@ -31,7 +33,7 @@ const ChatContainer = observer(() => {
 			userStore.getUsersForContactList(authStore.user.id).then(() => {
 				console.log('ChatContainer: contacts fetched', userStore.contacts)
 			})
-			socketStore.init(authStore.user.id) // Инициализация WebSocket
+			socketStore.init(authStore.user.id)
 		}
 	}, [
 		authStore.isAuth,
@@ -40,29 +42,44 @@ const ChatContainer = observer(() => {
 		userStore.contacts.length,
 	])
 
+	// Загрузка сообщений при выборе пользователя
+	useEffect(() => {
+		if (selectedContact && authStore.user.id) {
+			console.log(
+				'ChatContainer: fetching messages for interlocutor',
+				selectedContact.user.id
+			)
+			messageStore.getMessages(`${selectedContact.user.id}`)
+		}
+	}, [selectedContact, authStore.user.id])
+
 	if (!authStore.isReady) return <div>Loading auth...</div>
 	if (userStore.isLoading) return <div>Loading contacts...</div>
 	if (userStore.error) return <div>Error: {userStore.error}</div>
-
+	
 	return (
 		<div className={styles.chatContainer}>
 			<ContactList>
 				{userStore.contacts.map(contact => (
 					<Contact
-						key={contact.id}
-						name={contact.name}
-						id={contact.id}
-						avatar={contact.avatar}
+						key={contact.user.id}
+						name={contact.user.name}
+						id={contact.user.id}
+						avatar={contact.user.avatar}
 						isOnline={
 							socketStore.isSocketReady &&
-							socketStore.onlineUserIds.includes(String(contact.id))
+							socketStore.onlineUserIds.includes(String(contact.user.id))
 						}
-						onClick={() => setSelectedUser(contact)}
+						onClick={() => setSelectedContact(contact)}
 					/>
 				))}
 			</ContactList>
-			{selectedUser ? (
-				<Chat interlocutorName={selectedUser.name} userId={selectedUser.id} />
+			{selectedContact ? (
+				<Chat
+					interlocutorName={selectedContact.user.name}
+					userId={selectedContact.user.id}
+					chatId={selectedContact.chatId}
+				/>
 			) : (
 				<EmptyChat />
 			)}

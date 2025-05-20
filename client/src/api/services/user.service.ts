@@ -17,45 +17,48 @@ export default class UserService {
 		}
 	}
 
-	static async getUsersForContactList(currentUserId: number): Promise<
-		AxiosResponse<User[]> | undefined
-	> {
+	static async getUsersForContactList(
+		currentUserId: number
+	): Promise<AxiosResponse<{ user: User; chatId: number }[]> | undefined> {
 		try {
 			const chatsResponse = await ChatService.getChats()
 			const chats = chatsResponse.data
 
-			// Извлекаем все user2_id
-			const userIds = chats
+			// Извлекаем userId и соответствующий chatId
+			const contacts = chats
 				.map(chat => {
-					if(chat.user1_id === currentUserId) {
-						return chat.user2_id
-					}else if(chat.user2_id === currentUserId) {
-						return chat.user1_id
-					}else{ 
+					if (chat.user1_id === currentUserId) {
+						return { userId: chat.user2_id, chatId: chat.id }
+					} else if (chat.user2_id === currentUserId) {
+						return { userId: chat.user1_id, chatId: chat.id }
+					} else {
 						console.warn(
 							`Chat ${chat.id} does not involve current user ${currentUserId}`
 						)
-						return undefined
+						return null
 					}
 				})
-				.filter(id => id !== undefined)
+				.filter(item => item !== null)
 
-			if (userIds.length === 0) {
+			if (contacts.length === 0) {
 				console.log('No user IDs found in chats')
 				return undefined
 			}
 
 			// Выполняем запросы для каждого userId
-			const userPromises = userIds.map(userId =>
-				api.get<User>(`/user/getUser/${userId}`)
+			const userPromises = contacts.map(item =>
+				api.get<User>(`/user/getUser/${item.userId}`).then(response => ({
+					user: response.data,
+					chatId: item.chatId,
+				}))
 			)
 			const usersResponses = await Promise.all(userPromises)
 
-			// Собираем данные пользователей
-			const users = usersResponses.map(response => response.data)
-      // console.log('Users for contact list:', users);
-      
-			return { data: users } as AxiosResponse<User[]> // Имитация AxiosResponse
+			// Собираем данные пользователей с chatId
+			const usersWithChatId = usersResponses.map(response => response)
+			return { data: usersWithChatId } as AxiosResponse<
+				{ user: User; chatId: number }[]
+			>
 		} catch (error) {
 			console.error('Error fetching users for contact list:', error)
 			return undefined

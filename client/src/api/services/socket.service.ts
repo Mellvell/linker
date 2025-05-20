@@ -3,12 +3,12 @@ import type { User } from '../../types/api.types/user.types'
 
 export type SocketEvents = {
 	// Типы событий сокета
-	'message:new': (message: { id: string; text: string; userId: string }) => void
 	'file:uploaded': (file: { id: string; url: string; name: string }) => void
 	'user:updated': (user: User) => void
 	'users:online': (userIds: string[]) => void
 	'users:get': () => void
   'say:hello': (message: string) => void
+	'newMessage': (message: { id: number; senderid: number; receiverid: number; message: string; fileurl: string | null; createdat: string }) => void
 }
 
 class SocketService {

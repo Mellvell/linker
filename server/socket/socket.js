@@ -55,7 +55,7 @@ const initSocket = server => {
 }
 
 const getReceiverSocketId = userId => {
-	return socketToUserMap.get(userId)
+	return socketToUserMap.get(`${userId}`)
 }
 
 module.exports = { initSocket, getReceiverSocketId }

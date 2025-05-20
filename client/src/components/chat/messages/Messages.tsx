@@ -7,7 +7,7 @@ export default function Messages({ messages }: MessagesProps) {
 	return (
 		<div className={styles.chatMessages}>
 			{messages.map(msg => (
-				<Message userId={msg.userId} timestamp={msg.timestamp} text={msg.text} id={msg.id} />
+				<Message key={msg.id} userId={msg.senderid} text={msg.message} id={msg.id} />
 			))}
 		</div>
 	)
