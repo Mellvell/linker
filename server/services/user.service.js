@@ -113,15 +113,35 @@ class UserService {
   }
 
   async getSearchUser(search) {
-    // if (search) {
-    //   throw ApiError.BadRequest('Пользователь не найден');
-    // }
-    const users = await pool.query(`SELECT * FROM users WHERE name ILIKE $1`, [`%${search}%`]);
-    if (users.rows.length === 0) {
-      throw ApiError.BadRequest('Пользователь не найден');
-    }
-    const userDto = users.rows.map(user => new UserDto(user));
-    return userDto;
+    if (!search) {
+			throw ApiError.BadRequest('Поисковый запрос не указан')
+		}
+
+		// Удаляем символ @ из запроса, если он есть (для username)
+		const cleanedSearch = search.replace(/^@/, '').trim()
+
+		try {
+			// Поиск по username или name с использованием ILIKE
+			const users = await pool.query(
+				`SELECT * FROM users WHERE username ILIKE $1 OR name ILIKE $1`,
+				[`%${cleanedSearch}%`]
+			)
+
+			if (users.rows.length === 0) {
+				throw ApiError.BadRequest('Пользователь не найден')
+			}
+
+			// Преобразуем результаты в DTO
+			const userDto = users.rows.map(user => new UserDto(user))
+			return userDto
+		} catch (error) {
+			// Если ошибка уже является ApiError, пробрасываем её
+			if (error instanceof ApiError) {
+				throw error
+			}
+			// Иначе пробрасываем серверную ошибку
+			throw ApiError.Internal('Ошибка при поиске пользователей')
+		}
   }
 
 }

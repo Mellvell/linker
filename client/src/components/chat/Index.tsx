@@ -9,7 +9,7 @@ import { Context } from '../../main'
 import type { User } from '../../types/api.types/user.types'
 
 const ChatContainer = observer(() => {
-	const { authStore, userStore, socketStore, messageStore } =
+	const { authStore, userStore, socketStore, messageStore, chatStore } =
 		useContext(Context)
 	const [selectedContact, setSelectedContact] = useState<{
 		user: User
@@ -40,6 +40,7 @@ const ChatContainer = observer(() => {
 		authStore.isReady,
 		authStore.user.id,
 		userStore.contacts.length,
+		chatStore.chats.length
 	])
 
 	// Загрузка сообщений при выборе пользователя

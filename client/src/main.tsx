@@ -7,29 +7,33 @@ import { authStore } from './store/auth.store.ts'
 import { userStore } from './store/user.store.ts'
 import { socketStore } from './store/socket.store.ts'
 import { messageStore } from './store/message.store.ts'
+import { chatStore } from './store/chat.store.ts'
 
 import AuthStore from './store/auth.store.ts'
 import UserStore from './store/user.store.ts'
 import SocketStore from './store/socket.store.ts'
 import MessageStore from './store/message.store.ts'
+import ChatStore from './store/chat.store.ts'
 
 interface IStore {
 	authStore: AuthStore,
 	userStore: UserStore,
 	socketStore: SocketStore,
-	messageStore: MessageStore
+	messageStore: MessageStore,
+	chatStore: ChatStore
 }
 
 export const Context = createContext<IStore>({
 	authStore,
 	userStore,
 	socketStore,
-	messageStore
+	messageStore,
+	chatStore
 })
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<Context.Provider value={{ authStore, userStore, socketStore, messageStore }}>
+		<Context.Provider value={{ authStore, userStore, socketStore, messageStore, chatStore }}>
 			<App />
 		</Context.Provider>
 	</StrictMode>

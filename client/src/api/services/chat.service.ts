@@ -3,8 +3,8 @@ import api from ".."
 import type Chat from "../../types/api.types/chat.types"
 
 export default class ChatService {
-  static async createChat(senderId: string, receiverId: string) {
-    const response = await api.post('/chat/create', { senderId, receiverId })
+  static async createChat(receiverId: string) {
+    const response = await api.post('/chat/create', { receiverId })
 		return response.data
 	}
 

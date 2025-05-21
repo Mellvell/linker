@@ -1,17 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Input from '../input'
 import type { User } from '../../types/api.types/user.types'
+import styles from './styles.module.scss'
 import api from '../../api'
 
-export default function Search() {
-  const [query, setQuery] = useState<string>('')
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+import SearchUserCard from './searchUserCard/searchUserCard'
 
-  const handleSearch = async () => {
-    console.log('Start search');
-    
+export default function Search() {
+	const [query, setQuery] = useState<string>('')
+	const [users, setUsers] = useState<User[]>([])
+	const [loading, setLoading] = useState<boolean>(false)
+	const [error, setError] = useState<string | null>(null)
+	const [isSearching, setIsSearching] = useState<boolean>(false) // Состояние для отслеживания поиска
+
+	// Эффект для активации/деактивации поиска при изменении query
+	useEffect(() => {
+		setIsSearching(!!query.trim()) // Активен поиск, если query не пустой
+	}, [query])
+
+	const handleSearch = async () => {
+		console.log('Start search')
+
 		if (!query.trim()) return
 
 		setLoading(true)
@@ -30,28 +39,36 @@ export default function Search() {
 		}
 	}
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setQuery(e.target.value)
-		handleSearch() // Можно добавить задержку (debounce) для оптимизации
+		handleSearch() // Можно добавить debounce для оптимизации
 	}
 
-  return (
-		<div>
-			<Input
-				type='text'
-				value={query}
-				onChange={handleInputChange}
-				placeholder='Search users...'
-			/>
-			{loading && <p>Loading...</p>}
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-			<ul>
+	return (
+		<div className={styles.searchContainer}>
+			<div className={styles.inputWrap}>
+				<Input
+					className={styles.searchInput}
+					type='text'
+					value={query}
+					onChange={handleInputChange}
+					placeholder='Search users...'
+				/>
+			</div>
+			{loading && <p className={styles.loading}>Loading...</p>}
+			{error && <p className={styles.error}>{error}</p>}
+			<div className={styles.resultsList}>
 				{users.map(user => (
-					<li key={user.id}>
-						{user.username} ({user.email})
-					</li>
+					<SearchUserCard
+						key={user.id}
+						id={user.id}
+						avatar={user.avatar}
+						name={user.name}
+						surname={user.surname}
+						username={user.username}
+					/>
 				))}
-			</ul>
+			</div>
 		</div>
 	)
 }
