@@ -1,0 +1,72 @@
+@use '../../../../assets/styles/variables' as *;
+
+.skeletonContainer {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border-right: 1px solid $color-border;
+  height: 100%;
+
+  .skeletonTitle {
+    margin-top: 20px;
+    width: 250px;
+    height: 100px;
+    background: linear-gradient(90deg, $color-bg 20%, $color-surface 50%, $color-bg 80%);
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+    border-radius: $radius-md;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+
+  .skeletonContact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .skeletonItems {
+      display: flex;
+      align-items: center;
+      width: 250px;
+      height: 60px;
+      gap: 5px;
+      border-radius: $radius-md;
+      opacity: 0.7;
+
+
+      .skeletonAvatar{
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(90deg, $color-bg 20%, $color-surface 50%, $color-bg 80%);
+        background-size: 200% 100%;
+        animation: shimmer 2s ease-in-out infinite;
+        border-radius: 50%;
+      }
+
+      .skeletonLine{
+        width: 190px;
+        height: 40px;
+        background: linear-gradient(90deg, $color-bg 20%, $color-surface 50%, $color-bg 80%);
+        background-size: 200% 100%;
+        animation: shimmer 2s ease-in-out infinite;
+        border-radius: 10px;
+      }
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0.7;
+  }
+}

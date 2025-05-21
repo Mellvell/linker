@@ -5,12 +5,17 @@ import styles from './styles.module.scss'
 import useAvatar from '../../hooks/useAvatar/useAvatar'
 
 import type AvatarProps from './avatar.types'
+import AvatarSkeleton from './AvatarSkeleton/AvatarSkeleton'
 
 const Avatar: React.FC<AvatarProps> = observer(({ avatar, className, classNameWrap, maxWidth = '200px' }) => {
 	const { avatarUrl, isLoading, error } = useAvatar(avatar)
 
 	if (isLoading) {  
-		return <div>Loading...</div>
+		return (
+			<div>
+				<AvatarSkeleton maxWidth={maxWidth} />
+			</div>
+		)
 	}
 
 	if (error) {

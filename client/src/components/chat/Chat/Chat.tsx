@@ -6,6 +6,7 @@ import Input from '../../input'
 import Button from '../../button'
 import { observer } from 'mobx-react-lite'
 import { Context } from '../../../main'
+import ChatSkeleton from '../Skeleton/chatSkeleton/ChatSkeleton'
 
 const Chat = observer(({ interlocutorName, userId, chatId }: ChatProps) => {
 	const { authStore, messageStore } = useContext(Context)
@@ -29,7 +30,7 @@ const Chat = observer(({ interlocutorName, userId, chatId }: ChatProps) => {
 		}
 	}
 
-	if (messageStore.isLoading) return <div>Loading messages...</div>
+	if (messageStore.isLoading) return <ChatSkeleton />
 	if (messageStore.error) return <div>Error: {messageStore.error}</div>
 
 	return (

@@ -1,0 +1,24 @@
+@use '../../../assets/styles/variables' as *;
+
+.avatarSkeleton{
+  width: 1000px;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(90deg, $color-bg 20%, $color-surface 50%, $color-bg 80%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+  border-radius: 50%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0.7;
+  }
+}

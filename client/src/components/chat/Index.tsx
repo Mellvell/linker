@@ -7,6 +7,7 @@ import Chat from './Chat/Chat'
 import styles from './styles.module.scss'
 import { Context } from '../../main'
 import type { User } from '../../types/api.types/user.types'
+import ChatContainerSkeleton from './Skeleton'
 
 const ChatContainer = observer(() => {
 	const { authStore, userStore, socketStore, messageStore, chatStore } =
@@ -54,8 +55,8 @@ const ChatContainer = observer(() => {
 		}
 	}, [selectedContact, authStore.user.id])
 
-	if (!authStore.isReady) return <div>Loading auth...</div>
-	if (userStore.isLoading) return <div>Loading contacts...</div>
+	if (!authStore.isReady) return <ChatContainerSkeleton />
+	if (userStore.isLoading) return <ChatContainerSkeleton />
 	if (userStore.error) return <div>Error: {userStore.error}</div>
 	
 	return (
