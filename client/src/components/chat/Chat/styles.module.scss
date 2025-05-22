@@ -27,10 +27,14 @@
 
 	}
 	
-	.chatTitle{
+	.chatHeader{
+		display: flex;
+		align-items: center;
+		gap: 10px;
 		position: relative;
 		padding: 10px;
 		border-bottom: 1px solid $color-border;
+
 		&::after {
 			content: ' ';
 			height: 1px;
@@ -39,6 +43,14 @@
 			position: absolute;
 			top: 0;
 			left: 0;
+		}
+
+		.status{
+			color: $color-muted;
+		}
+
+		.online{
+			color: $color-success;
 		}
 	}
 }

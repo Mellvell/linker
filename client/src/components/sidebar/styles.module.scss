@@ -1,7 +1,8 @@
 @use '../../assets/styles/variables' as *;
 
 .sidebar {
-  width: 220px;
+  width: 100%;
+  max-width: 220px;
   height: 100vh;
 
   display: flex;
@@ -32,3 +33,6 @@
   }
 }
 
+.active{
+  color: $color-secondary;
+}

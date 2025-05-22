@@ -14,18 +14,27 @@ export default function Sidebar() {
 			<div className={styles.logo}>Linker</div>
 			<nav className={styles.nav}>
 				<SidebarItems>
-					<NavLink to={'/profile'}>
+					<NavLink
+						to={'/profile'}
+						className={({ isActive }) => (isActive ? styles.active : '')}
+					>
 						<PersonOutlinedIcon /> Profile
 					</NavLink>
 				</SidebarItems>
 				<SidebarItems>
-					<NavLink to={'/'}>
+					<NavLink
+						to={'/'}
+						className={({ isActive }) => (isActive ? styles.active : '')}
+					>
 						<ChatBubbleOutlineOutlinedIcon />
 						Chats
 					</NavLink>
 				</SidebarItems>
 				<SidebarItems>
-					<NavLink to={'/settings'}>
+					<NavLink
+						to={'/settings'}
+						className={({ isActive }) => (isActive ? styles.active : '')}
+					>
 						<SettingsOutlinedIcon />
 						Settings
 					</NavLink>

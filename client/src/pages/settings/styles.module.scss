@@ -1,0 +1,89 @@
+@use '../../assets/styles/variables' as *;
+
+.settingsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: $color-bg;
+  color: $color-text;
+  height: 100%;
+  font-family: $font-base;
+
+  .settingsTitle {
+    font-size: $font-size-h3;
+    margin-bottom: 20px;
+    color: $color-secondary;
+  }
+
+  .settingsSection {
+    margin-bottom: 30px;
+
+    .sectionTitle {
+      font-size: $font-size-base;
+      margin-bottom: 10px;
+      color: $color-muted;
+    }
+
+    .optionGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        background: $color-surface;
+        border-radius: $radius-md;
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &:hover {
+          background: darken($color-surface, 10%);
+        }
+
+        input {
+          margin: 0;
+        }
+      }
+    }
+
+    .infoItem {
+      padding: 10px;
+      background: $color-surface;
+      border-radius: $radius-md;
+      margin-bottom: 10px;
+    }
+
+    .actionButton {
+      padding: 10px 20px;
+      background: $color-primary;
+      color: $color-white;
+      border: none;
+      border-radius: $radius-md;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: background 0.3s;
+
+      &:hover {
+        background: $color-primary-alt;
+      }
+    }
+
+    .logoutButton {
+      padding: 10px 20px;
+      background: $color-error;
+      color: $color-white;
+      border: none;
+      border-radius: $radius-md;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: darken($color-error, 10%);
+      }
+    }
+  }
+}

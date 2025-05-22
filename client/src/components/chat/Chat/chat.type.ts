@@ -1,7 +1,7 @@
+import type { User } from '../../../types/api.types/user.types'
 import type Message from '../messages/message/message.type'
 
 export default interface ChatProps {
-	interlocutorName: string
-	userId: number
+	selectedUser: User
 	chatId: number
 }

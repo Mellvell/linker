@@ -8,6 +8,7 @@ import styles from './styles.module.scss'
 import { Context } from '../../main'
 import type { User } from '../../types/api.types/user.types'
 import ChatContainerSkeleton from './Skeleton'
+import Search from '../search'
 
 const ChatContainer = observer(() => {
 	const { authStore, userStore, socketStore, messageStore, chatStore } =
@@ -61,25 +62,27 @@ const ChatContainer = observer(() => {
 	
 	return (
 		<div className={styles.chatContainer}>
-			<ContactList>
-				{userStore.contacts.map(contact => (
-					<Contact
-						key={contact.user.id}
-						name={contact.user.name}
-						id={contact.user.id}
-						avatar={contact.user.avatar}
-						isOnline={
-							socketStore.isSocketReady &&
-							socketStore.onlineUserIds.includes(String(contact.user.id))
-						}
-						onClick={() => setSelectedContact(contact)}
-					/>
-				))}
-			</ContactList>
+			<div className={styles.contactListContainer}>
+				<Search />
+				<ContactList>
+					{userStore.contacts.map(contact => (
+						<Contact
+							key={contact.user.id}
+							name={contact.user.name}
+							id={contact.user.id}
+							avatar={contact.user.avatar}
+							isOnline={
+								socketStore.isSocketReady &&
+								socketStore.onlineUserIds.includes(String(contact.user.id))
+							}
+							onClick={() => setSelectedContact(contact)}
+						/>
+					))}
+				</ContactList>
+			</div>
 			{selectedContact ? (
 				<Chat
-					interlocutorName={selectedContact.user.name}
-					userId={selectedContact.user.id}
+					selectedUser={selectedContact.user}
 					chatId={selectedContact.chatId}
 				/>
 			) : (
