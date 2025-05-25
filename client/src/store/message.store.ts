@@ -52,14 +52,15 @@ class MessageStore {
 		}
 	}
 
-	async sendMessage(receiverId: number, message: string, chatId: number): Promise<void> {
+	async sendMessage(messageData: {
+		chat_id: number
+		receiver_id: number
+		content: string
+		file?: File | null // Добавляем поле для файла
+	}): Promise<void> {
 		this.setError(null)
 		try {
-			const response = await MessagesService.sendMessage(
-				receiverId,
-				message,
-		chatId
-			)
+			const response = await MessagesService.sendMessage(messageData)
 			if (response && response.data) {
 				this.addMessage(response.data)
 			}

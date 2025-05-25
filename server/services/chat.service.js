@@ -50,7 +50,7 @@ class ChatService {
 		}
 		
 		const query = `
-		SELECT * FROM chats
+		SELECT * FROM direct_chats
 		WHERE user1_id = $1 OR user2_id = $1
 		`
 		const result = await pool.query(query, [user_id])

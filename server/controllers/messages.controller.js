@@ -2,31 +2,27 @@ const messagesService = require('../services/messages.service')
 const { getReceiverSocketId } = require('../socket/socket')
 
 class MessagesController {
-	async sendMessage(req, res) {
+	async sendMessage(req, res, next) {
 		try {
-			console.log('Sending message')
 			console.log('Request body:', req.body)
+			console.log('Request file:', req.file)
 
-			const { receiverId, chatId, message } = req.body
-			const senderId = req.user.id // Assuming you have user ID in req.user
+			const parsedData = req.body.data ? JSON.parse(req.body.data) : {}
+			const { receiver_id , chat_id, content } = parsedData
 			const file = req.file
-
+			console.log('Parsed data:', parsedData);
+			
+			// Проверяем, что senderId берется из токена, если не предоставлен
+			const sender_id = req.user.id // Предпочитаем req.user.id
 			const newMessage = await messagesService.createMessage(
-				senderId,
-				receiverId,
-				chatId,
-				message,
+				sender_id,
+				receiver_id,
+				chat_id,
+				content,
 				file
 			)
-			console.log('New message created:', newMessage)
 
-			if (!newMessage) {
-				return res.status(400).json({ error: 'Message creation failed' })
-			}
-
-      console.log(receiverId);
-      
-			const receiverSocketId = getReceiverSocketId(receiverId)
+			const receiverSocketId = getReceiverSocketId(receiver_id)
 			console.log('Receiver socket ID:', receiverSocketId)
 
 			// Отправляем WebSocket-сообщение только если receiverSocketId существует
@@ -39,22 +35,24 @@ class MessagesController {
 
 			return res.status(201).json(newMessage)
 		} catch (error) {
-			console.error('Error in sendMessage:', error.stack) 
-			return res.status(500).json({ error: error.message })
+			next(error)
 		}
 	}
 
 	async getMessages(req, res) {
 		try {
+			console.log('Request params:', req.params);
+			
 			const userToChatId = req.params.userToChatId
 			const myId = req.user.id
 			const messages = await messagesService.getMessages(userToChatId, myId)
-
+			console.log('Retrieved messages:', messages);
 			if (!messages) {
 				return res.status(404).json({ error: 'Messages not found' })
 			}
 			return res.status(200).json(messages)
 		} catch (error) {
+			console.log('Error retrieving messages:', error);
 			return res.status(500).json({ error: error.message })
 		}
 	}

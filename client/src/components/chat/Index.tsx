@@ -75,7 +75,8 @@ const ChatContainer = observer(() => {
 								socketStore.isSocketReady &&
 								socketStore.onlineUserIds.includes(String(contact.user.id))
 							}
-							onClick={() => setSelectedContact(contact)}
+							onClick={() => {console.log(contact.chatId); setSelectedContact(contact)
+							}}
 						/>
 					))}
 				</ContactList>

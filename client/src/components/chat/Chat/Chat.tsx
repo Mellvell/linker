@@ -8,23 +8,65 @@ import { observer } from 'mobx-react-lite'
 import { Context } from '../../../main'
 import ChatSkeleton from '../Skeleton/chatSkeleton/ChatSkeleton'
 import Avatar from '../../avatar'
+import AttachFileIcon from '@mui/icons-material/AttachFile'
+import Popup from '../../popup'
 
 const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 	const { authStore, messageStore, socketStore } = useContext(Context)
 	const [textMessage, setTextMessage] = useState('')
+	const [selectedFile, setSelectedFile] = useState<File | null>(null)
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+	const [popupText, setPopupText] = useState('')
+	const [isPopupOpen, setIsPopupOpen] = useState(false) // Новое состояние для попапа
 
 	const dialogMessages = (messageStore.messages || []).filter(
 		msg =>
-			(msg.senderid === authStore.user.id && msg.receiverid === selectedUser.id) ||
-			(msg.senderid === selectedUser.id && msg.receiverid === authStore.user.id)
+			(msg.sender_id === authStore.user.id &&
+				msg.receiver_id === selectedUser.id) ||
+			(msg.sender_id === selectedUser.id &&
+				msg.receiver_id === authStore.user.id)
 	)
+
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0]
+		if (file) {
+			setSelectedFile(file)
+			const url = URL.createObjectURL(file)
+			setPreviewUrl(url)
+			setIsPopupOpen(true) // Открываем попап при выборе файла
+		}
+	}
+
+	const handleSendWithFile = async () => {
+		if (!selectedFile && !popupText.trim()) return
+
+		try {
+			const messageData = {
+				chat_id: chatId,
+				receiver_id: selectedUser.id,
+				content: popupText || ' ',
+				file: selectedFile,
+			}
+			await messageStore.sendMessage(messageData)
+			setSelectedFile(null)
+			setPreviewUrl(null)
+			setPopupText('')
+			setIsPopupOpen(false) // Закрываем попап после отправки
+		} catch (error) {
+			console.error('Failed to send message with file:', error)
+		}
+	}
 
 	const handleSendMessage = async (e: React.FormEvent) => {
 		e.preventDefault()
 		if (!textMessage.trim()) return
 
 		try {
-			await messageStore.sendMessage(selectedUser.id, textMessage, chatId)
+			await messageStore.sendMessage({
+				chat_id: chatId,
+				receiver_id: selectedUser.id,
+				content: textMessage,
+			})
 			setTextMessage('')
 		} catch (error) {
 			console.error('Failed to send message:', error)
@@ -62,10 +104,51 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 					value={textMessage}
 					onChange={e => setTextMessage(e.target.value)}
 				/>
+				<label htmlFor='file' className={styles.selectFileLabel}>
+					<AttachFileIcon />
+					<input
+						id='file'
+						type='file'
+						className={styles.selectFile}
+						onChange={handleFileChange}
+						accept='image/*'
+					/>
+				</label>
 				<Button className={styles.messageButton} type='submit'>
 					Отправить
 				</Button>
 			</div>
+
+			{/* Попап для предпросмотра */}
+			{previewUrl && (
+				<Popup isOpen={isPopupOpen} setIsOpen={setIsPopupOpen}>
+					<div className={styles.previewPopup}>
+						<img
+							src={previewUrl}
+							alt='Preview'
+							className={styles.previewImage}
+						/>
+						<Input
+							type='text'
+							placeholder='Добавьте описание...'
+							value={popupText}
+							onChange={e => setPopupText(e.target.value)}
+							className={styles.popupInput}
+						/>
+						<Button type='button' onClick={handleSendWithFile}>Отправить</Button>
+						<Button type='button'
+							onClick={() => {
+								setSelectedFile(null)
+								setPreviewUrl(null)
+								setPopupText('')
+								setIsPopupOpen(false) // Закрываем попап при отмене
+							}}
+						>
+							Отмена
+						</Button>
+					</div>
+				</Popup>
+			)}
 		</form>
 	)
 })

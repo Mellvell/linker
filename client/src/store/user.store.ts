@@ -30,6 +30,8 @@ class UserStore {
 		this.setError(null)
 		try {
 			const response = await UserService.getUsersForContactList(currentUserId)
+			console.log(response?.data);
+			
 			if (response) {
 				this.setContacts(response.data)
 				console.log('UserStore: received contacts', response.data.map(item => item.chatId));

@@ -1,8 +1,7 @@
 const routerMessage = require('express').Router();
 const authMiddleware = require('../middleware/auth.middleware');
 const MessagesController = require('../controllers/messages.controller');
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' }) 
+const upload = require('../middleware/multer.middleware');
 
 routerMessage.post(
 	'/sendMessage',

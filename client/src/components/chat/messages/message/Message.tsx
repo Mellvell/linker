@@ -3,7 +3,7 @@ import styles from './styles.module.scss'
 import type MessageProps from './message.type'
 import { Context } from '../../../../main'
 
-export default function Message({ text, id, userId }: MessageProps) {
+export default function Message({ text, id, userId, fileUrl }: MessageProps) {
 	const { authStore } = useContext(Context)
 	const isOwnMessage = userId === authStore.user.id
 
@@ -14,7 +14,14 @@ export default function Message({ text, id, userId }: MessageProps) {
 				isOwnMessage ? styles.ownMessage : styles.interlocutorMessage
 			}`}
 		>
-			<span className={styles.text}>{text}</span>
+			{/* Отображаем текст */}
+			{text && <span className={styles.text}>{text}</span>}
+			{/* Отображаем изображение, если есть fileUrl */}
+			{fileUrl && (
+				<div className={styles.imageContainer}>
+					<img src={fileUrl} alt='attachment' className={styles.image} />
+				</div>
+			)}
 		</div>
 	)
 }

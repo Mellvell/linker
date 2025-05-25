@@ -28,12 +28,12 @@ export default class UserService {
 			const contacts = chats
 				.map(chat => {
 					if (chat.user1_id === currentUserId) {
-						return { userId: chat.user2_id, chatId: chat.id }
+						return { userId: chat.user2_id, chatId: chat.chat_id }
 					} else if (chat.user2_id === currentUserId) {
-						return { userId: chat.user1_id, chatId: chat.id }
+						return { userId: chat.user1_id, chatId: chat.chat_id }
 					} else {
 						console.warn(
-							`Chat ${chat.id} does not involve current user ${currentUserId}`
+							`Chat ${chat.chat_id} does not involve current user ${currentUserId}`
 						)
 						return null
 					}
@@ -56,6 +56,8 @@ export default class UserService {
 
 			// Собираем данные пользователей с chatId
 			const usersWithChatId = usersResponses.map(response => response)
+			console.log(usersWithChatId);
+			
 			return { data: usersWithChatId } as AxiosResponse<
 				{ user: User; chatId: number }[]
 			>

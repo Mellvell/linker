@@ -18,6 +18,8 @@ class ChatController {
 			const id = req.user.id
 			
 			const chats = await chatService.getChats(id)
+			console.log('chats', chats);
+			
 			res.status(200).json(chats)
 		} catch (error) {
 			console.log(error);

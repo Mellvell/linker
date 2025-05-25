@@ -1,45 +1,84 @@
 const pool = require('../config/db')
 const cloudinary = require('../config/cloudinary')
+const path = require('path')
+const DatauriParser = require('datauri/parser')
 
-class MessagesService{
-  async createMessage(senderId, receiverId, chatId, message, file) {
-    if(!senderId || !receiverId || !chatId || !message) {
-      throw new Error('All fields are required');
-    }
+const parser = new DatauriParser()
 
-    const createdAt = new Date();
+class MessagesService {
+	async createMessage(senderId, receiverId, chatId, content, file) {
+		console.log(
+			`Информация на входе ${senderId} ${receiverId} ${chatId} ${content}`
+		)
 
-    let imageUrl = null;
-    if(file) {
-      try {
-        const uploadResponse = await cloudinary.uploader.upload(file.path, {
-          folder: 'messages',
-          resource_type: 'image',
-        });
-      } catch (error) {
-        throw new Error(`Image upload failed: ${error.message}`);
-      }
-    }
+		if (!senderId || !receiverId || !chatId || !content) {
+			throw new Error('All fields are required')
+		}
 
-    const query = 'INSERT INTO messages (senderId, receiverId, chatId, message, createdAt) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-    const values = [senderId, receiverId, chatId, message, createdAt];
-    const result = await pool.query(query, values);
-    if (result.rows.length === 0) {
-      throw new Error('Message creation failed');
-    }
-    return result.rows[0];
-  }
+		const sentAt = new Date()
 
-  async getMessages(userToChatId, myId) {
-    if(!userToChatId || !myId) {
-      throw new Error('All fields are required');
-    }
+		let fileUrl = null
+		if (file) {
+			try {
+				const ext = path.extname(file.originalname).toString()
+				const dataUri = parser.format(ext, file.buffer)
+				const uploadResult = await cloudinary.uploader.upload(dataUri.content, {
+					folder: 'group_avatars',
+					resource_type: 'auto',
+				})
+				fileUrl = uploadResult.secure_url
+			} catch (error) {
+				throw new Error(
+					'Failed to upload avatar to Cloudinary: ' + error.message
+				)
+			}
+		}
 
-    const query = 'SELECT * FROM messages WHERE (senderId = $1 AND receiverId = $2) OR (senderId = $2 AND receiverId = $1)';
-    const values = [userToChatId, myId];
-    const result = await pool.query(query, values);
-    return result.rows;
-  }
+		if (chatId) {
+			const chatCheckQuery = `
+        SELECT chat_id FROM direct_chats WHERE chat_id = $1
+      `
+			const chatCheckResult = await pool.query(chatCheckQuery, [chatId])
+			if (chatCheckResult.rows.length === 0) {
+				throw new Error('Direct chat does not exist')
+			}
+		}
+
+		const insertQuery = `
+      INSERT INTO messages (chat_id, receiver_id, sender_id, content, file_url, sent_at, is_read)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING chat_id, receiver_id, sender_id, content, file_url, sent_at, is_read
+    `
+		const values = [
+			chatId,
+			receiverId,
+			senderId,
+			content,
+			fileUrl || null,
+			sentAt,
+			false,
+		]
+		const result = await pool.query(insertQuery, values)
+		if (result.rows.length === 0) {
+			throw new Error('Message creation failed')
+		}
+		const newMessage = result.rows[0]
+		return newMessage
+	}
+
+	async getMessages(userToChatId, myId) {
+		if (!userToChatId || !myId) {
+			throw new Error('All fields are required')
+		}
+
+		const query =
+			'SELECT * FROM messages WHERE (sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1)'
+		const values = [userToChatId, myId]
+		const result = await pool.query(query, values)
+		console.log('Messages retrieved:', result.rows)
+
+		return result.rows
+	}
 }
 
-module.exports = new MessagesService();
+module.exports = new MessagesService()
