@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import styles from './styles.module.scss'
 import { Link, useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'

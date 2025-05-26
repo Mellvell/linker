@@ -1,20 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Context } from '../../main'
 import Avatar from '../avatar'
 import styles from './style.module.scss'
 import Button from '../button'
-import Input from '../input'
 import { useTranslation } from 'react-i18next'
 
 export default function Profile() {
 	const [cheng, setCheng] = useState(false)
 	const { authStore } = useContext(Context)
 	const { t } = useTranslation('profile')
-
-	const [name, setName] = useState('')
-	const [surname, setSurname] = useState('')
-	const [username, setUsername] = useState('')
-	const [email, setEmail] = useState('')
 
 	const chengInfo = () => {
 		setCheng(!cheng)

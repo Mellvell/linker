@@ -128,7 +128,7 @@ class UserService {
 			)
 
 			if (users.rows.length === 0) {
-				throw ApiError.BadRequest('Пользователь не найден')
+				return []
 			}
 
 			// Преобразуем результаты в DTO

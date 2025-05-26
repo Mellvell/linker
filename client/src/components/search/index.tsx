@@ -3,25 +3,31 @@ import Input from '../input'
 import type { User } from '../../types/api.types/user.types'
 import styles from './styles.module.scss'
 import api from '../../api'
-
+import { useTranslation } from 'react-i18next'
 import SearchUserCard from './searchUserCard/searchUserCard'
+import SearchSkeleton from './searchSekeleton/searchSkeleton'
 
 export default function Search() {
 	const [query, setQuery] = useState<string>('')
 	const [users, setUsers] = useState<User[]>([])
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
-	const [isSearching, setIsSearching] = useState<boolean>(false) // Состояние для отслеживания поиска
+	const [isSearching, setIsSearching] = useState<boolean>(false)
+	const [showResults, setShowResults] = useState<boolean>(false)
+	const { t } = useTranslation('search')
 
-	// Эффект для активации/деактивации поиска при изменении query
 	useEffect(() => {
-		setIsSearching(!!query.trim()) // Активен поиск, если query не пустой
+		const hasQuery = !!query.trim()
+		setIsSearching(hasQuery)
+		setShowResults(hasQuery)
 	}, [query])
 
 	const handleSearch = async () => {
-		console.log('Start search')
-
-		if (!query.trim()) return
+		if (!query.trim()) {
+			setUsers([])
+			setError(null)
+			return
+		}
 
 		setLoading(true)
 		setError(null)
@@ -31,9 +37,15 @@ export default function Search() {
 				params: { query },
 			})
 			setUsers(response.data)
-		} catch (err) {
-			setError('Failed to fetch users')
-			console.error(err)
+		} catch (err: any) {
+			// Обрабатываем только реальные ошибки, не "Пользователь не найден"
+			if (
+				err.response?.status !== 400 ||
+				err.response?.data?.message !== 'Пользователь не найден'
+			) {
+				setError(t('search_error_message'))
+			}
+			setUsers([])
 		} finally {
 			setLoading(false)
 		}
@@ -41,7 +53,7 @@ export default function Search() {
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setQuery(e.target.value)
-		handleSearch() // Можно добавить debounce для оптимизации
+		handleSearch()
 	}
 
 	return (
@@ -52,23 +64,34 @@ export default function Search() {
 					type='text'
 					value={query}
 					onChange={handleInputChange}
-					placeholder='Search users...'
+					placeholder={t('search_input_placeholder')}
 				/>
 			</div>
-			{loading && <p className={styles.loading}>Loading...</p>}
-			{error && <p className={styles.error}>{error}</p>}
-			<div className={styles.resultsList}>
-				{users.map(user => (
-					<SearchUserCard
-						key={user.id}
-						id={user.id}
-						avatar={user.avatar}
-						name={user.name}
-						surname={user.surname}
-						username={user.username}
-					/>
-				))}
-			</div>
+
+			{showResults && (
+				<div className={styles.resultsWrapper}>
+					<div className={styles.resultsList}>
+						{loading ? (
+							<SearchSkeleton />
+						) : users.length > 0 ? (
+							users.map(user => (
+								<SearchUserCard
+									key={user.id}
+									id={user.id}
+									avatar={user.avatar}
+									name={user.name}
+									surname={user.surname}
+									username={user.username}
+								/>
+							))
+						) : (
+							<div className={styles.placeholder}>
+								{t('search_no_users_message')}
+							</div>
+						)}
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }

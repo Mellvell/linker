@@ -1,0 +1,5 @@
+{
+	"search_error_message": "Произошла ошибка при поиске",
+	"search_no_users_message": "Пользователь не найден",
+	"search_input_placeholder": "Поиск пользователей..."
+}

@@ -25,6 +25,9 @@ import ruSidebar from '../../assets/locales/sidebarLocales/ru.sidebar.translatio
 import enProfile from '../../assets/locales/profileLocales/en.profile.translation.json'
 import ruProfile from '../../assets/locales/profileLocales/ru.profile.translation.json'
 
+import enSearch from '../../assets/locales/searchLocales/en.search.translation.json'
+import ruSearch from '../../assets/locales/searchLocales/ru.search.translation.json'
+
 i18n
 	.use(LanguageDetector) // Автоматическое определение языка
 	.use(initReactI18next) // Интеграция с React
@@ -38,7 +41,8 @@ i18n
 				contact: enContact,
 				emptyChat: enEmptyChat,
 				sidebar: enSidebar,
-				profile: enProfile
+				profile: enProfile,
+				search: enSearch
 			},
 			ru: {
 				login: ruLogin,
@@ -48,7 +52,8 @@ i18n
 				contact: ruContact,
 				emptyChat: ruEmptyChat,
 				sidebar: ruSidebar,
-				profile: ruProfile
+				profile: ruProfile,
+				search: ruSearch
 			},
 		},
 		fallbackLng: 'en', // Язык по умолчанию

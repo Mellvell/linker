@@ -7,6 +7,8 @@ import useAvatar from '../../hooks/useAvatar/useAvatar'
 import type AvatarProps from './avatar.types'
 import AvatarSkeleton from './AvatarSkeleton/AvatarSkeleton'
 
+import noAvatar from '/static/assets/noAvatar/noAvatarPlaceholder.png?url'
+
 const Avatar: React.FC<AvatarProps> = observer(({ avatar, className, classNameWrap, maxWidth = '200px' }) => {
 	const { avatarUrl, isLoading, error } = useAvatar(avatar)
 
@@ -23,7 +25,11 @@ const Avatar: React.FC<AvatarProps> = observer(({ avatar, className, classNameWr
 	}
 
 	if (!avatarUrl) {
-		return <div>No avatar found</div>
+		return (
+			<div className={`${styles.imgWarper} ${classNameWrap}`}>
+				<img style={{ maxWidth: maxWidth }} src={noAvatar} />
+			</div>
+		)
 	}
 
 	return (
