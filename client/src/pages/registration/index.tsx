@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import styles from './styles.module.scss'
 import { Link, useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 import Form from '../../components/form'
 import TextField from '../../components/TextField'
@@ -12,6 +13,7 @@ export default function Registration() {
 	const [surname, setSurname] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const { t } = useTranslation('registration')
 
 	const { authStore } = useContext(Context)	
 
@@ -26,34 +28,34 @@ export default function Registration() {
 			<div className={styles.registerWrap}>
 				<div className={styles.rightBlock}>
 					<Form className={styles.registerForm}>
-						<h2 className={styles.registerHeading}>Sing Up</h2>
+						<h2 className={styles.registerHeading}>{t('title')}</h2>
 						<TextField
 							onChange={e => setName(e.target.value)}
 							value={name}
 							className={styles.input}
 							type='text'
-							label='Name'
+							label={t('name_label')}
 						/>
 						<TextField
 							onChange={e => setSurname(e.target.value)}
 							value={surname}
 							className={styles.input}
 							type='text'
-							label='Surname'
+							label={t('surname_label')}
 						/>
 						<TextField
 							onChange={e => setEmail(e.target.value)}
 							value={email}
 							className={styles.input}
 							type='text'
-							label='Email'
+							label={t('email_label')}
 						/>
 						<TextField
 							onChange={e => setPassword(e.target.value)}
 							value={password}
 							className={styles.input}
 							type='password'
-							label='Password'
+							label={t('password_label')}
 						/>
 						<div className={styles.registerButtonWrap}>
 							<Button
@@ -63,7 +65,7 @@ export default function Registration() {
 								}
 								className={styles.registerButton}
 							>
-								Sing Up
+								{t('button_sign_up')}
 							</Button>
 						</div>
 					</Form>
@@ -71,16 +73,14 @@ export default function Registration() {
 				<div className={styles.leftBlock}>
 					<div className={styles.leftText}>
 						<div className={styles.leftHeadingWrap}>
-							<h1 className={styles.leftHeading}>
-								Welcome to <span>LINKER</span>.
-							</h1>
+							<h1 dangerouslySetInnerHTML={{ __html: t('welcome_message') }} />
 						</div>
 						<div>
 							<p>
-								You have an account ?
-								<Link className={styles.leftLink} to={'/login'}>
+								{t('has_account')}
+								<Link className={styles.link} to='/login'>
 									{' '}
-									Sign In.
+									{t('sign_in_link')}
 								</Link>
 							</p>
 						</div>

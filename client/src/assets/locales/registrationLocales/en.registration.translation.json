@@ -1,0 +1,11 @@
+{
+	"title": "Sign Up",
+	"name_label": "Name",
+	"surname_label": "Surname",
+	"email_label": "Email",
+	"password_label": "Password",
+	"button_sign_up": "Sign Up",
+	"welcome_message": "Welcome to <span>LINKER</span>.",
+	"has_account": "You have an account?",
+	"sign_in_link": "Sign In."
+}

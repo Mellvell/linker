@@ -21,7 +21,7 @@ app.use(
 app.use((req, res, next) => {
 	req.io = io
 	next()
-})
+}) 
 app.use(express.json())
 app.use(cookieParser())
 app.use('/api', router)

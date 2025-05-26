@@ -23,7 +23,7 @@ class MessagesService {
 				const ext = path.extname(file.originalname).toString()
 				const dataUri = parser.format(ext, file.buffer)
 				const uploadResult = await cloudinary.uploader.upload(dataUri.content, {
-					folder: 'group_avatars',
+					folder: 'messages',
 					resource_type: 'auto',
 				})
 				fileUrl = uploadResult.secure_url

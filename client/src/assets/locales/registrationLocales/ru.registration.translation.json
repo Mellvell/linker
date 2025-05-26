@@ -1,0 +1,11 @@
+{
+	"title": "Регистрация",
+	"name_label": "Имя",
+	"surname_label": "Фамилия",
+	"email_label": "Электронная почта",
+	"password_label": "Пароль",
+	"button_sign_up": "Зарегистрироваться",
+	"welcome_message": "Добро пожаловать в <span>LINKER</span>.",
+	"has_account": "Уже есть аккаунт?",
+	"sign_in_link": "Войти."
+}

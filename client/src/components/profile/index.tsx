@@ -4,10 +4,12 @@ import Avatar from '../avatar'
 import styles from './style.module.scss'
 import Button from '../button'
 import Input from '../input'
+import { useTranslation } from 'react-i18next'
 
 export default function Profile() {
 	const [cheng, setCheng] = useState(false)
 	const { authStore } = useContext(Context)
+	const { t } = useTranslation('profile')
 
 	const [name, setName] = useState('')
 	const [surname, setSurname] = useState('')
@@ -21,7 +23,7 @@ export default function Profile() {
 	return (
 		<div className={styles.profileWrapper}>
 			<div className={styles.profileTop}>
-				<h3 className={styles.profileTitle}>Profile</h3>
+				<h3 className={styles.profileTitle}>{t('title')}</h3>
 			</div>
 			<div className={styles.profileUser}>
 				<Avatar avatar={authStore.user.avatar} maxWidth='90px' />
@@ -34,41 +36,20 @@ export default function Profile() {
 			</div>
 			<div className={styles.profileInfo}>
 				<div className={styles.profileInfoItems}>
-					<p>Name: </p>
-					{cheng ? (
-						<Input
-							type='text'
-							placeholder='Name'
-							onChange={e => setName(e.target.value)}
-							value={name}
-						/>
-					) : (
-						<p>{authStore.user.name}</p>
-					)}
+					<p>{t('name')}: </p>
+					<p>{authStore.user.name}</p>
 				</div>
 				<div className={styles.profileInfoItems}>
-					<p>Surname: </p>
-					{cheng ? (
-						<Input type='text' placeholder='surname' />
-					) : (
-						<p>{authStore.user.surname}</p>
-					)}
+					<p>{t('surname')}: </p>
+					<p>{authStore.user.surname}</p>
 				</div>
 				<div className={styles.profileInfoItems}>
-					<p>Username: </p>
-					{cheng ? (
-						<Input type='text' placeholder='Username' />
-					) : (
-						<p>{authStore.user.username}</p>
-					)}
+					<p>{t('username')}: </p>
+					<p>{authStore.user.username}</p>
 				</div>
 				<div className={styles.profileInfoItems}>
-					<p>Email: </p>
-					{cheng ? (
-						<Input type='text' placeholder='Email' />
-					) : (
-						<p>{authStore.user.email}</p>
-					)}
+					<p>{t('email')}: </p>
+					<p>{authStore.user.email}</p>
 				</div>
 			</div>
 			<div className={styles.profileButtonWrap}>

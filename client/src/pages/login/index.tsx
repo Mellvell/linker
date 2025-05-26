@@ -4,12 +4,14 @@ import { Link, useNavigate } from 'react-router'
 import Form from '../../components/form'
 import TextField from '../../components/TextField'
 import Button from '../../components/button'
+import { useTranslation } from 'react-i18next' 
 import { useContext, useState } from 'react'
 import { Context } from '../../main'
 
 export default function Login() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const { t } = useTranslation('login')
 
 	const navigate = useNavigate()
 
@@ -24,24 +26,28 @@ export default function Login() {
 			<div className={styles.loginContainer}>
 				<div className={styles.rightBlock}>
 					<Form className={styles.loginForm}>
-						<h2 className={styles.rightHeading}>Sing In</h2>
+						<h2 className={styles.rightHeading}>{t('title')}</h2>
 						<TextField
 							onChange={e => setEmail(e.target.value)}
 							value={email}
 							className={styles.textField}
 							type='text'
-							label='Email'
+							label={t('email_label')}
 						/>
 						<TextField
 							onChange={e => setPassword(e.target.value)}
 							value={password}
 							className={styles.textField}
 							type='password'
-							label='Password'
+							label={t('password_label')}
 						/>
 						<div className={styles.buttonLogin}>
-							<Button type='button' onClick={() => handleLogin(email, password)} className={styles.loginButton}>
-								Sing In
+							<Button
+								type='button'
+								onClick={() => handleLogin(email, password)}
+								className={styles.loginButton}
+							>
+								{t('button_sign_in')}
 							</Button>
 						</div>
 					</Form>
@@ -49,16 +55,16 @@ export default function Login() {
 				<div className={styles.leftBlock}>
 					<div className={styles.leftText}>
 						<div>
-							<h1>
-								Welcome to <span>LINKER</span>.
-							</h1>
+							<h1
+								dangerouslySetInnerHTML={{ __html: t('welcome_message') }}
+							/>
 						</div>
 						<div>
 							<p>
-								Don't have an account?
-								<Link className={styles.link} to={'/registration'}>
+								{t('no_account')}
+								<Link className={styles.link} to='/registration'>
 									{' '}
-									Sign up.
+									{t('sign_up_link')}
 								</Link>
 							</p>
 						</div>

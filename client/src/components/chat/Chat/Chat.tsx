@@ -10,6 +10,7 @@ import ChatSkeleton from '../Skeleton/chatSkeleton/ChatSkeleton'
 import Avatar from '../../avatar'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import Popup from '../../popup'
+import { useTranslation } from 'react-i18next'
 
 const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 	const { authStore, messageStore, socketStore } = useContext(Context)
@@ -18,6 +19,7 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const [popupText, setPopupText] = useState('')
 	const [isPopupOpen, setIsPopupOpen] = useState(false) // Новое состояние для попапа
+	const { t } = useTranslation('chat')
 
 	const dialogMessages = (messageStore.messages || []).filter(
 		msg =>
@@ -100,7 +102,7 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 				<Input
 					className={styles.messageInput}
 					type='text'
-					placeholder='Напишите сообщение...'
+					placeholder={t('input_messages_placeholder')}
 					value={textMessage}
 					onChange={e => setTextMessage(e.target.value)}
 				/>
@@ -115,7 +117,7 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 					/>
 				</label>
 				<Button className={styles.messageButton} type='submit'>
-					Отправить
+					{t('button_message')}
 				</Button>
 			</div>
 
@@ -130,21 +132,24 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 						/>
 						<Input
 							type='text'
-							placeholder='Добавьте описание...'
+							placeholder={t('input_file_text_placeholder')}
 							value={popupText}
 							onChange={e => setPopupText(e.target.value)}
 							className={styles.popupInput}
 						/>
-						<Button type='button' onClick={handleSendWithFile}>Отправить</Button>
-						<Button type='button'
+						<Button type='button' onClick={handleSendWithFile}>
+							{t('button_file_send')}
+						</Button>
+						<Button
+							type='button'
 							onClick={() => {
 								setSelectedFile(null)
 								setPreviewUrl(null)
 								setPopupText('')
-								setIsPopupOpen(false) // Закрываем попап при отмене
+								setIsPopupOpen(false)
 							}}
 						>
-							Отмена
+							{t('button_file_cancel')}
 						</Button>
 					</div>
 				</Popup>

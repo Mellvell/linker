@@ -5,10 +5,12 @@ import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
+import { useTranslation } from 'react-i18next'
 
 import SidebarItems from './sidebarItems'
 
 export default function Sidebar() {
+	const { t } = useTranslation('sidebar')
 	return (
 		<aside className={styles.sidebar}>
 			<div className={styles.logo}>Linker</div>
@@ -18,7 +20,7 @@ export default function Sidebar() {
 						to={'/profile'}
 						className={({ isActive }) => (isActive ? styles.active : '')}
 					>
-						<PersonOutlinedIcon /> Profile
+						<PersonOutlinedIcon /> {t('sidebar_profile')}
 					</NavLink>
 				</SidebarItems>
 				<SidebarItems>
@@ -27,7 +29,7 @@ export default function Sidebar() {
 						className={({ isActive }) => (isActive ? styles.active : '')}
 					>
 						<ChatBubbleOutlineOutlinedIcon />
-						Chats
+						{t('sidebar_chats')}
 					</NavLink>
 				</SidebarItems>
 				<SidebarItems>
@@ -36,14 +38,14 @@ export default function Sidebar() {
 						className={({ isActive }) => (isActive ? styles.active : '')}
 					>
 						<SettingsOutlinedIcon />
-						Settings
+						{t('sidebar_setting')}
 					</NavLink>
 				</SidebarItems>
 			</nav>
 			<SidebarItems className={styles.logout}>
 				<NavLink to={'/logout'}>
 					<LogoutOutlinedIcon />
-					Logout
+					{t('sidebar_logout')}
 				</NavLink>
 			</SidebarItems>
 		</aside>

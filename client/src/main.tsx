@@ -1,3 +1,4 @@
+import './config/i18next/i18next.ts'
 import { createContext, StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.scss'
