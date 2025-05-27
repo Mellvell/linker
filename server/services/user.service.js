@@ -24,7 +24,26 @@ class UserService {
 		const { name, surname, email, password } = userData
 		const username = generateUniqueUsername()
 		const avatarBuffer = generateAvatar(name)
-		const avatarPath = await saveAvatar(username, avatarBuffer)
+
+		console.log(avatarBuffer, 'Avatar Buffer:', avatarBuffer);
+		
+		let avatarPath;
+		if (avatarBuffer) {
+			try {
+				const dataUri = parser.format('.png', avatarBuffer)
+				const uploadResult = await cloudinary.uploader.upload(dataUri.content, {
+					folder: 'avatars',
+					resource_type: 'image',
+				})
+				avatarPath = uploadResult.secure_url
+				console.log('Avatar uploaded to Cloudinary:', avatarPath)
+			} catch (error) {
+				throw new Error(
+					'Failed to upload avatar to Cloudinary: ' + error.message
+				)
+			}
+		}
+
 		const hashPassword = await bcrypt.hash(password, 10)
 
 		const query = `INSERT INTO users (name, surname, email, hashPassword, username, avatar) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
