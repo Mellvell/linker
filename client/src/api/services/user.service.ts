@@ -4,8 +4,18 @@ import type { User } from "../../types/api.types/user.types";
 import ChatService from "./chat.service";
 
 export default class UserService {
-	static async updateUser(name: string, surname: string, email: string) {}
-
+	static async updateUser(formData: FormData) {
+		try {
+			const response = await api.put('/user/update', formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+				withCredentials: true,
+			})
+			return response.data
+		} catch (error) {
+			console.error('Error updating user:', error)
+			throw error
+		}
+	}
 	static async getUser(
 		userId: string
 	): Promise<AxiosResponse<User> | undefined> {
@@ -56,8 +66,8 @@ export default class UserService {
 
 			// Собираем данные пользователей с chatId
 			const usersWithChatId = usersResponses.map(response => response)
-			console.log(usersWithChatId);
-			
+			console.log(usersWithChatId)
+
 			return { data: usersWithChatId } as AxiosResponse<
 				{ user: User; chatId: number }[]
 			>

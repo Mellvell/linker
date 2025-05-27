@@ -1,14 +1,14 @@
+import React from 'react'
 import styles from './styles.module.scss'
-import Avatar from '../../avatar';
-import { useContext } from 'react';
-import { Context } from '../../../main';
+import Avatar from '../../avatar'
 
 interface SearchUserCard {
-  id: number;
-  name: string;
-  surname: string;
-  username: string;
-  avatar: string;
+	id: number
+	name: string
+	surname: string
+	username: string
+	avatar: string
+	onClick: () => void
 }
 
 export default function SearchUserCard({
@@ -17,17 +17,10 @@ export default function SearchUserCard({
 	surname,
 	username,
 	avatar,
+	onClick,
 }: SearchUserCard) {
-	const { chatStore } = useContext(Context)
-	const handleCreateChat = async (receiverId: string) => {
-		chatStore.createChats(receiverId)
-	}	
-
 	return (
-		<div
-			className={styles.userCard}
-			onClick={() => handleCreateChat(id.toString())}
-		>
+		<div className={styles.userCard} onClick={onClick}>
 			<Avatar avatar={avatar} maxWidth='50px' />
 			<div className={styles.userInfo}>
 				<h5 className={styles.userFullname}>

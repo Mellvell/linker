@@ -16,12 +16,20 @@ import SocketStore from './store/socket.store.ts'
 import MessageStore from './store/message.store.ts'
 import ChatStore from './store/chat.store.ts'
 
+import type { User } from './types/api.types/user.types.ts'
+
 interface IStore {
-	authStore: AuthStore,
-	userStore: UserStore,
-	socketStore: SocketStore,
-	messageStore: MessageStore,
+	authStore: AuthStore
+	userStore: UserStore
+	socketStore: SocketStore
+	messageStore: MessageStore
 	chatStore: ChatStore
+	setSelectedContact?: React.Dispatch<
+		React.SetStateAction<{
+			user: User
+			chatId: number
+		} | null>
+	>
 }
 
 export const Context = createContext<IStore>({

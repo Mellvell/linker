@@ -1,9 +1,9 @@
 import type { AxiosResponse } from 'axios'
 import type { AuthResponse } from '../../types/api.types/response/auth.response'
 import api from '..'
+import UserService from './user.service'
 
 export default class AuthService {
-
 	static async login(
 		email: string,
 		password: string
@@ -16,7 +16,7 @@ export default class AuthService {
 		surname: string,
 		email: string,
 		password: string
-	): Promise<AxiosResponse<AuthResponse>> { 
+	): Promise<AxiosResponse<AuthResponse>> {
 		return api.post<AuthResponse>('/user/registration', {
 			name,
 			surname,
@@ -25,9 +25,11 @@ export default class AuthService {
 		})
 	}
 
-  static async logout(): Promise<void> {
-    return api.post('/user/logout')
-  }
+	static async updateUser(formData: FormData) {
+		return UserService.updateUser(formData)
+	}
 
-
+	static async logout(): Promise<void> {
+		return api.post('/user/logout')
+	}
 }

@@ -1,0 +1,9 @@
+// styles.module.scss
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; // Занимает всю высоту экрана
+  width: 100%;
+}

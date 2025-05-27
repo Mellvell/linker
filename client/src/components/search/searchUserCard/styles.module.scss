@@ -1,13 +1,13 @@
 @use '../../../assets/styles/variables' as *;
 
-.userCard{
+.userCard {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px;
   position: relative;
   cursor: pointer;
-  transition: background .3s;
+  transition: background 0.3s;
 
   &:hover {
     background: #2a2a3d;
@@ -33,12 +33,12 @@
     left: 0;
   }
 
-  .userInfo{
+  .userInfo {
     display: flex;
     flex-direction: column;
     gap: 5px;
 
-    .userUsername{
+    .userUsername {
       color: $color-muted;
     }
   }

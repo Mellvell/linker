@@ -1,34 +1,30 @@
 @use '../../assets/styles/variables' as *;
 
-.profileWrapper{
+.profileWrapper {
   min-width: 400px;
   width: fit-content;
-  padding: 20px;
+  padding: 30px;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
 
-  .profileTop{
-
-    .profileTitle{
+  .profileTop {
+    .profileTitle {
       margin-bottom: 10px;
-    }
-
-    .profileEditIcon{
-
     }
   }
 
-  .profileUser{
+  .profileUser {
     position: relative;
     display: flex;
     gap: 15px;
     align-items: center;
     padding: 25px 0;
 
-
-    .userTitle{
-      margin-bottom:8px;
+    .userTitle {
+      margin-bottom: 8px;
     }
 
-    .userEmail{
+    .userEmail {
       color: $color-muted;
     }
 
@@ -42,15 +38,13 @@
     }
   }
 
-  .profileInfo{
-
+  .profileInfo {
     .profileInfoItems {
       position: relative;
       display: flex;
       padding: 25px 0;
       align-items: baseline;
       justify-content: space-between;
-
 
       &::after {
         position: absolute;
@@ -63,16 +57,70 @@
     }
   }
 
-  .profileButtonWrap{
+  .profileButtonWrap {
     padding: 25px 0;
     width: 100%;
 
-    button{
+    button {
       width: 100%;
       border: 1px solid $color-dark-grey;
 
-      &:hover, &:active {
+      &:hover,
+      &:active {
         background-color: transparent;
+      }
+    }
+  }
+
+  // Стили для формы в popup
+  .editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: $color-surface;
+    border-radius: $radius-md;
+    width: 100%;
+    max-width: 400px;
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .formGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      label {
+        font-size: 1rem;
+        color: $color-dark-grey;
+      }
+
+      input {
+        padding: 10px;
+        border: 1px solid $color-border;
+        border-radius: $radius-sm;
+        font-size: 1rem;
+        outline: none;
+
+        &:focus {
+          border-color: $color-primary;
+        }
+      }
+    }
+
+    .formButtons {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+
+      button {
+        flex: 1;
+        padding: 10px;
+        border-radius: $radius-sm;
       }
     }
   }

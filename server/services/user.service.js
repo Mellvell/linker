@@ -1,119 +1,189 @@
-const generateAvatar = require('../utils/generateAvatar');
-const saveAvatar = require('../utils/saveAvatar');
-const generateUniqueUsername = require('../utils/generateUniqueUsername');
-const pool = require('../config/db');
-const bcrypt = require('bcrypt');
-const UserDto = require('../dtos/user.dto');
-const tokenService = require('./token.service');
-const ApiError = require('../exceptions/api-error');
+const generateAvatar = require('../utils/generateAvatar')
+const saveAvatar = require('../utils/saveAvatar')
+const generateUniqueUsername = require('../utils/generateUniqueUsername')
+const pool = require('../config/db')
+const bcrypt = require('bcrypt')
+const UserDto = require('../dtos/user.dto')
+const tokenService = require('./token.service')
+const ApiError = require('../exceptions/api-error')
+const cloudinary = require('../config/cloudinary')
+const path = require('path')
+const DatauriParser = require('datauri/parser')
+
+const parser = new DatauriParser()
 
 class UserService {
-  async registrationUser(userData) {
-    const candidate = await pool.query(`SELECT * FROM users WHERE email = $1`, [userData.email]);
-    if (candidate.rows.length > 0) {
-      throw ApiError.BadRequest('Пользователь с таким email уже существует');
-    }
-
-    const { name, surname, email, password } = userData;
-    const username = generateUniqueUsername();
-    const avatarBuffer = generateAvatar(name);
-    const avatarPath = await saveAvatar(username, avatarBuffer);
-    const hashPassword = await bcrypt.hash(password, 10);
-
-    const query = `INSERT INTO users (name, surname, email, hashPassword, username, avatar) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
-    const values = [name, surname, email, hashPassword, username, avatarPath];
-
-    const result = await pool.query(query, values);
-    const userDto = new UserDto(result.rows[0]);
-
-    const tokens = await tokenService.generateTokens({...userDto});
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
-    return {
-      ...tokens,
-      user: userDto,
-    };
-  }
-
-  async updateUser(userData) {
-    const candidate = await pool.query(`SELECT * FROM users WHERE email = $1`, [
+	async registrationUser(userData) {
+		const candidate = await pool.query(`SELECT * FROM users WHERE email = $1`, [
 			userData.email,
 		])
-
 		if (candidate.rows.length > 0) {
 			throw ApiError.BadRequest('Пользователь с таким email уже существует')
 		}
 
-    const { name, surname, email, username } = userData
-    const checkUsername = await pool.query(`SELECT * FROM users WHERE email = $1`, [
-			userData.email,
+		const { name, surname, email, password } = userData
+		const username = generateUniqueUsername()
+		const avatarBuffer = generateAvatar(name)
+		const avatarPath = await saveAvatar(username, avatarBuffer)
+		const hashPassword = await bcrypt.hash(password, 10)
+
+		const query = `INSERT INTO users (name, surname, email, hashPassword, username, avatar) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
+		const values = [name, surname, email, hashPassword, username, avatarPath]
+
+		const result = await pool.query(query, values)
+		const userDto = new UserDto(result.rows[0])
+
+		const tokens = await tokenService.generateTokens({ ...userDto })
+		await tokenService.saveToken(userDto.id, tokens.refreshToken)
+
+		return {
+			...tokens,
+			user: userDto,
+		}
+	}
+
+	
+
+	async loginUser(userData) {
+		const { email, password } = userData
+		const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [
+			email,
 		])
-    
+		if (user.rows.length === 0) {
+			throw ApiError.BadRequest('Пользователь с таким email не найден')
+		}
 
-  }
+		const isPasswordEqual = await bcrypt.compare(
+			password,
+			user.rows[0].hashpassword
+		)
+		if (!isPasswordEqual) {
+			throw ApiError.BadRequest('Неверный пароль')
+		}
 
-  async loginUser(userData) {
-    const { email, password } = userData;
-    const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
-    if (user.rows.length === 0) {
-      throw ApiError.BadRequest('Пользователь с таким email не найден');
-    }
+		const userDto = new UserDto(user.rows[0])
+		const tokens = await tokenService.generateTokens({ ...userDto })
+		await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
-    const isPasswordEqual = await bcrypt.compare(password, user.rows[0].hashpassword);
-    if (!isPasswordEqual) {
-      throw ApiError.BadRequest('Неверный пароль');
-    }
+		return {
+			...tokens,
+			user: userDto,
+		}
+	}
 
-    const userDto = new UserDto(user.rows[0]);
-    const tokens = await tokenService.generateTokens({...userDto});
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+	async logout(refreshToken) {
+		const token = await tokenService.removeToken(refreshToken)
+		return token
+	}
 
-    return {
-      ...tokens,
-      user: userDto,
-    };
-  }
+	async updateUser(userId, userData, avatar) {
+		if (!userId) {
+			throw ApiError.BadRequest('user id required')
+		}
 
-  async logout(refreshToken) {
-    const token = await tokenService.removeToken(refreshToken);
-    return token;
-  }
+		const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [
+			userId,
+		])
 
-  async refresh(refreshToken) {
-    if (!refreshToken) {
-      throw ApiError.UnauthorizedError();
-    }
-    const userData = tokenService.validateRefreshToken(refreshToken);
-    const tokenFromDb = await tokenService.findToken(refreshToken);
-    if (!userData || !tokenFromDb) {
-      throw ApiError.UnauthorizedError();
-    }
-    const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [userData.id]);
-    const userDto = new UserDto(user.rows[0]);
-    const tokens = await tokenService.generateTokens({...userDto});
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+		if (user.rows.length === 0) {
+			throw ApiError.BadRequest('Пользователь не найден')
+		}
 
-    return {
-      ...tokens,
-      user: userDto,
-      message: 'Токены успешно обновлены',
-    };
-  }
+		const { name, surname, email, username } = userData
 
-  async getUser(userId) {
-    if (!userId) {
-      throw ApiError.BadRequest('Пользователь не найден');
-    }
-    const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId]);
-    if (user.rows.length === 0) {
-      throw ApiError.BadRequest('Пользователь не найден');
-    }
-    const userDto = new UserDto(user.rows[0]);
-    return userDto;
-  }
+		console.log('User Avatar:', avatar);
+		
 
-  async getSearchUser(search) {
-    if (!search) {
+		let avatarUrl;
+		if(avatar){
+			try {
+				const ext = path.extname(avatar.originalname).toString()
+				const dataUri = parser.format(ext, avatar.buffer)
+				const uploadResult = await cloudinary.uploader.upload(dataUri.content, {
+					folder: 'avatars',
+					resource_type: 'image',
+				})
+				avatarUrl = uploadResult.secure_url
+				console.log('Avatar uploaded to Cloudinary:', avatarUrl);
+				
+			} catch (error) {
+				throw new Error(
+					'Failed to upload avatar to Cloudinary: ' + error.message
+				)
+			}
+		}
+
+		const query = `
+			UPDATE users 
+			SET name = $1, surname = $2, email = $3, username = $4, avatar = $5 
+			WHERE id = $6 
+			RETURNING *
+		`
+
+		const values = [
+			name || user.rows[0].name,
+			surname || user.rows[0].surname,
+			email	|| user.rows[0].email,
+			username || user.rows[0].username,
+			avatarUrl || user.rows[0].avatar, // Используем существующий аватар, если новый не предоставлен
+			userId,
+		]
+
+		const result = await pool.query(query, values)
+		if (result.rows.length === 0) {
+			throw ApiError.BadRequest('Ошибка при обновлении пользователя')
+		}
+
+		console.log('Updated user:', result.rows[0]);
+		
+
+		const updatedUser = new UserDto(result.rows[0])
+		const tokens = await tokenService.generateTokens({ ...updatedUser })
+		await tokenService.saveToken(updatedUser.id, tokens.refreshToken)
+		return {
+			...tokens,
+			user: updatedUser,
+			message: 'Пользователь успешно обновлен',
+		}
+	}
+
+	async refresh(refreshToken) {
+		if (!refreshToken) {
+			throw ApiError.UnauthorizedError()
+		}
+		const userData = tokenService.validateRefreshToken(refreshToken)
+		const tokenFromDb = await tokenService.findToken(refreshToken)
+		if (!userData || !tokenFromDb) {
+			throw ApiError.UnauthorizedError()
+		}
+		const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [
+			userData.id,
+		])
+		const userDto = new UserDto(user.rows[0])
+		const tokens = await tokenService.generateTokens({ ...userDto })
+		await tokenService.saveToken(userDto.id, tokens.refreshToken)
+
+		return {
+			...tokens,
+			user: userDto,
+			message: 'Токены успешно обновлены',
+		}
+	}
+
+	async getUser(userId) {
+		if (!userId) {
+			throw ApiError.BadRequest('Пользователь не найден')
+		}
+		const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId])
+		if (user.rows.length === 0) {
+			throw ApiError.BadRequest('Пользователь не найден')
+		}
+		const userDto = new UserDto(user.rows[0])
+		return userDto
+	}
+
+	async getSearchUser(search) {
+		if (!search) {
 			throw ApiError.BadRequest('Поисковый запрос не указан')
 		}
 
@@ -142,8 +212,7 @@ class UserService {
 			// Иначе пробрасываем серверную ошибку
 			throw ApiError.Internal('Ошибка при поиске пользователей')
 		}
-  }
-
+	}
 }
 
-module.exports = new UserService();
+module.exports = new UserService()

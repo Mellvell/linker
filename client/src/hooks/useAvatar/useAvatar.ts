@@ -1,37 +1,47 @@
 import { useState, useEffect } from 'react'
-import FileService from '../../api/services/file.service'
-
 import type useAvatarType from './useAvatar.type'
 
-const useAvatar = (avatar: string): useAvatarType => {
-	const [avatarUrl, setAvatarUrl] = useState<string | undefined>('')
-	const [isLoading, setIsLoading] = useState<boolean>(false)
+const useAvatar = (avatarUrl: string): useAvatarType => {
+	const [isLoading, setIsLoading] = useState<boolean>(true)
 	const [error, setError] = useState<string | null>(null)
+	const [loaded, setLoaded] = useState<boolean>(false)
 
 	useEffect(() => {
-		const fetchAvatar = async () => {
-			setIsLoading(true)
-			setError(null)
-			try {
-				const url = await FileService.getAvatar(avatar)
-				setAvatarUrl(url)
-				setIsLoading(false)
-			} catch (error) {
-				setError(error instanceof Error ? error.message : 'Unknown error')
-				setIsLoading(false)
-			}
+		if (!avatarUrl) {
+			setIsLoading(false)
+			return
 		}
 
-		fetchAvatar()
+		// Сбрасываем состояние при изменении URL
+		setIsLoading(true)
+		setLoaded(false)
+		setError(null)
+
+		// Проверяем, загружено ли изображение
+		const img = new Image()
+		img.src = avatarUrl
+
+		img.onload = () => {
+			setLoaded(true)
+			setIsLoading(false)
+		}
+
+		img.onerror = () => {
+			setError('Failed to load image')
+			setIsLoading(false)
+		}
 
 		return () => {
-			if (avatarUrl && avatarUrl.startsWith('blob:')) {
-				URL.revokeObjectURL(avatarUrl) // Очистка Blob URL
-			}
+			img.onload = null
+			img.onerror = null
 		}
-	}, [avatar])
+	}, [avatarUrl])
 
-	return { avatarUrl, isLoading, error }
+	return {
+		avatarUrl: loaded ? avatarUrl : undefined,
+		isLoading,
+		error,
+	}
 }
 
 export default useAvatar

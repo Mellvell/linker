@@ -12,7 +12,7 @@ class ChatService {
 		}
 
 		const checkQuery = `
-    SELECT id FROM chats
+    SELECT chat_id FROM direct_chats
     WHERE (user1_id = $1 AND user2_id = $2)
     OR (user1_id = $2 AND user2_id = $1) `
 
@@ -22,9 +22,9 @@ class ChatService {
 		}
 
 		const insertQuery = `
-    INSERT INTO chats (user1_id, user2_id)
+    INSERT INTO direct_chats (user1_id, user2_id)
     VALUES ($1, $2)
-    RETURNING id, user1_id, user2_id
+    RETURNING *
     `
 		const insertResult = await pool.query(insertQuery, [senderId, receiverId])
 		const newChat = insertResult.rows[0]

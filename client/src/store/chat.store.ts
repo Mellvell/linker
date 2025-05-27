@@ -1,8 +1,8 @@
-import { makeAutoObservable, set } from "mobx"
-import ChatService from "../api/services/chat.service"
-import type Chat from "../types/api.types/chat.types"
-import type { User } from "../types/api.types/user.types"
-import UserService from "../api/services/user.service"
+import { makeAutoObservable } from 'mobx'
+import ChatService from '../api/services/chat.service'
+import type Chat from '../types/api.types/chat.types'
+import type { User } from '../types/api.types/user.types'
+import UserService from '../api/services/user.service'
 
 export default class ChatStore {
 	chats: Chat[] = []
@@ -24,9 +24,9 @@ export default class ChatStore {
 		this.chats.push(chat)
 	}
 
-	setIsLoading(loading: boolean){
-    this.isLoading = loading
-  }
+	setIsLoading(loading: boolean) {
+		this.isLoading = loading
+	}
 
 	async getUser(userId: string) {
 		try {
@@ -48,19 +48,29 @@ export default class ChatStore {
 		}
 	}
 
-	async createChats(receiverId: string) {
-    this.setIsLoading(true)
+	async createChats(
+		receiverId: string
+	): Promise<
+		{
+			chat_id: number
+			user1_id: number
+			user2_id: number
+			created_at: string
+		}> {
+		this.setIsLoading(true)
 		try {
 			const response = await ChatService.createChat(receiverId)
-      console.log(response);
+			console.log(response)
 
 			this.addChat(response)
-      this.setIsLoading(false)
+			this.setIsLoading(false)
+			return response
 		} catch (error) {
 			console.error(error)
+			this.setIsLoading(false)
+			throw error
 		}
 	}
 }
-
 
 export const chatStore = new ChatStore()

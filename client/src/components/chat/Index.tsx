@@ -42,10 +42,9 @@ const ChatContainer = observer(() => {
 		authStore.isReady,
 		authStore.user.id,
 		userStore.contacts.length,
-		chatStore.chats.length
+		chatStore.chats.length,
 	])
 
-	// Загрузка сообщений при выборе пользователя
 	useEffect(() => {
 		if (selectedContact && authStore.user.id) {
 			console.log(
@@ -59,37 +58,50 @@ const ChatContainer = observer(() => {
 	if (!authStore.isReady) return <ChatContainerSkeleton />
 	if (userStore.isLoading) return <ChatContainerSkeleton />
 	if (userStore.error) return <div>Error: {userStore.error}</div>
-	
+
 	return (
-		<div className={styles.chatContainer}>
-			<div className={styles.contactListContainer}>
-				<Search />
-				<ContactList>
-					{userStore.contacts.map(contact => (
-						<Contact
-							key={contact.user.id}
-							name={contact.user.name}
-							id={contact.user.id}
-							avatar={contact.user.avatar}
-							isOnline={
-								socketStore.isSocketReady &&
-								socketStore.onlineUserIds.includes(String(contact.user.id))
-							}
-							onClick={() => {console.log(contact.chatId); setSelectedContact(contact)
-							}}
-						/>
-					))}
-				</ContactList>
+		<Context.Provider
+			value={{
+				authStore,
+				userStore,
+				socketStore,
+				messageStore,
+				chatStore,
+				setSelectedContact,
+			}}
+		>
+			<div className={styles.chatContainer}>
+				<div className={styles.contactListContainer}>
+					<Search />
+					<ContactList>
+						{userStore.contacts.map(contact => (
+							<Contact
+								key={contact.user.id}
+								name={contact.user.name}
+								id={contact.user.id}
+								avatar={contact.user.avatar}
+								isOnline={
+									socketStore.isSocketReady &&
+									socketStore.onlineUserIds.includes(String(contact.user.id))
+								}
+								onClick={() => {
+									console.log(contact.chatId)
+									setSelectedContact(contact)
+								}}
+							/>
+						))}
+					</ContactList>
+				</div>
+				{selectedContact ? (
+					<Chat
+						selectedUser={selectedContact.user}
+						chatId={selectedContact.chatId}
+					/>
+				) : (
+					<EmptyChat />
+				)}
 			</div>
-			{selectedContact ? (
-				<Chat
-					selectedUser={selectedContact.user}
-					chatId={selectedContact.chatId}
-				/>
-			) : (
-				<EmptyChat />
-			)}
-		</div>
+		</Context.Provider>
 	)
 })
 

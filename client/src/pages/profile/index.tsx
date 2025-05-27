@@ -1,10 +1,10 @@
-import React from 'react'
 import Profile from '../../components/profile'
+import styles from './styles.module.scss'
 
 export default function ProfilePage() {
   return (
-    <div>
-      <Profile />
-    </div>
-  )
+		<div className={styles.container}>
+			<Profile />
+		</div>
+	)
 }

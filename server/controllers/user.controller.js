@@ -40,6 +40,29 @@ class UserController {
 		}
 	}
 
+	async updateUser(req, res, next) {
+		try {
+			console.log('Request body:', req.body)
+			console.log('Request file:', req.file)
+
+			const userId = req.user.id // Предпочитаем req.user.id
+			const userData = req.body
+			const avatar = req.file
+			console.log('Parsed data:', userData);
+
+			const updatedUser = await userService.updateUser(userId, userData, avatar)
+
+			res.cookie('refreshToken', updatedUser.refreshToken, {
+				maxAge: 30 * 24 * 60 * 60 * 1000,
+				httpOnly: true,
+			})
+
+			return res.status(200).json(updatedUser)
+		} catch (error) {
+			next(error)
+		}
+	}
+
 	async refresh(req, res, next) {
 		try {
 			const { refreshToken } = req.cookies
@@ -77,7 +100,9 @@ class UserController {
 		}
 	}
 
-	async update(req, res, next) {}
+	async update(req, res, next) {
+	}
+
 	async delete(req, res, next) {}
 }
 

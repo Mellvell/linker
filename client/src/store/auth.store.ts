@@ -104,24 +104,47 @@ class AuthStore {
 		}
 	}
 
-  async checkAuth() {
-    this.setIsLoading(true);
-    this.setError(null);
-    try {
-      const response = await axios.get<AuthResponse>(`${API_URL}/user/refresh`, {
-        withCredentials: true,
-      });
-      localStorage.setItem('token', response.data.accessToken);
-      this.setAuth(true);
-      this.setUser(response.data.user);
-      this.setIsReady(true);
-    } catch (error) {
-      this.setError(error instanceof Error ? error.message : 'Auth check failed');
-      this.setIsReady(true);
-    } finally {
-      this.setIsLoading(false);
-    }
-  }
+	async updateUser(formData: FormData) {
+		this.setIsLoading(true)
+		this.setError(null)
+		try {
+			const data = await AuthService.updateUser(formData)
+			localStorage.setItem('token', data.accessToken)
+			console.log(data.user);
+			
+			this.setUser(data.user)
+			this.setAuth(true)
+		} catch (error) {
+			this.setError(error instanceof Error ? error.message : 'Update failed')
+			throw error
+		} finally {
+			this.setIsLoading(false)
+		}
+	}
+
+	async checkAuth() {
+		this.setIsLoading(true)
+		this.setError(null)
+		try {
+			const response = await axios.get<AuthResponse>(
+				`${API_URL}/user/refresh`,
+				{
+					withCredentials: true,
+				}
+			)
+			localStorage.setItem('token', response.data.accessToken)
+			this.setAuth(true)
+			this.setUser(response.data.user)
+			this.setIsReady(true)
+		} catch (error) {
+			this.setError(
+				error instanceof Error ? error.message : 'Auth check failed'
+			)
+			this.setIsReady(true)
+		} finally {
+			this.setIsLoading(false)
+		}
+	}
 }
 
 export const authStore = new AuthStore()

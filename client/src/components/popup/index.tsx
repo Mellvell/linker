@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react'
+import React from 'react'
 import styles from './styles.module.scss'
 import type PopupProps from './popup.types'
 
@@ -9,10 +9,6 @@ export default function Popup({
 	isOpen,
 	setIsOpen,
 }: PopupProps) {
-	const togglePopup = () => {
-		setIsOpen(!isOpen)
-	}
-
 	const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
 		if (e.target === e.currentTarget) {
 			setIsOpen(false)
@@ -21,16 +17,16 @@ export default function Popup({
 
 	return (
 		<div className={styles.popupContainer}>
-			{popupName ? (
+			{popupName && (
 				<div className={styles.popupNameWrapper}>
 					<p
-						onClick={togglePopup}
+						onClick={() => setIsOpen(!isOpen)}
 						className={`${styles.popupName} ${classNamePopupName}`}
 					>
 						{popupName}
 					</p>
 				</div>
-			) : null}
+			)}
 			{isOpen && (
 				<div className={styles.popupOverlay} onClick={handleOverlayClick}>
 					<div className={styles.popupContent}>{children}</div>

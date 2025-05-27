@@ -1,8 +1,7 @@
 @use '../../assets/styles/variables' as *;
 
 .popupContainer {
-
-  .popupNameWrapper{
+  .popupNameWrapper {
     cursor: pointer;
   }
 
@@ -22,11 +21,15 @@
 
   .popupContent {
     width: auto;
-    max-width: 90%; // Ограничение ширины, чтобы не выходить за пределы экрана
-    max-height: 90vh; 
+    max-width: 90%;
+    max-height: 90vh;
     background: $color-surface;
     border-radius: 10px;
+    padding: 20px;
     animation: slideIn 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 
