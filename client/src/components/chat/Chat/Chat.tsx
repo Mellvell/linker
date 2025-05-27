@@ -113,7 +113,6 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 						type='file'
 						className={styles.selectFile}
 						onChange={handleFileChange}
-						accept='image/*'
 					/>
 				</label>
 				<Button className={styles.messageButton} type='submit'>

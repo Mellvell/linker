@@ -1,8 +1,11 @@
 @use '../../assets/styles/variables' as *;
 
 .settingsContainer {
-  flex: 1;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; // Занимает всю высоту экрана
+  width: 100%;
   flex-direction: column;
   padding: 20px;
   background: $color-bg;
@@ -27,27 +30,8 @@
 
     .optionGroup {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 10px;
-
-      .option {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px;
-        background: $color-surface;
-        border-radius: $radius-md;
-        cursor: pointer;
-        transition: background 0.3s;
-
-        &:hover {
-          background: darken($color-surface, 10%);
-        }
-
-        input {
-          margin: 0;
-        }
-      }
     }
 
     .infoItem {

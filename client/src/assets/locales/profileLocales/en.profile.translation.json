@@ -3,5 +3,6 @@
 	"name": "Name",
 	"surname": "Surname",
 	"username": "Username",
-	"email": "Email"
+	"email": "Email",
+	"change_info": "Edit profile"
 }

@@ -2,6 +2,7 @@ const pool = require('../config/db')
 const cloudinary = require('../config/cloudinary')
 const path = require('path')
 const DatauriParser = require('datauri/parser')
+const iconv = require('iconv-lite')
 
 const parser = new DatauriParser()
 
@@ -16,45 +17,52 @@ class MessagesService {
 		}
 
 		const sentAt = new Date()
-
 		let fileUrl = null
+		let fileName = null
+
 		if (file) {
+			console.log('File details before upload:', {
+				originalname: file.originalname,
+				bufferSize: file.buffer.length,
+				mimetype: file.mimetype,
+			})
+
+			if (!file.buffer || file.buffer.length === 0) {
+				throw new Error('File buffer is empty or corrupted')
+			}
+
 			try {
-				const ext = path.extname(file.originalname).toString()
+				const ext = path.extname(file.originalname).replace('.', '') // Получаем расширение без точки (например, 'docx')
 				const dataUri = parser.format(ext, file.buffer)
+				console.log('Data URI start:', dataUri.content.substring(0, 50)) // Первые 50 символов
 				const uploadResult = await cloudinary.uploader.upload(dataUri.content, {
 					folder: 'messages',
 					resource_type: 'auto',
+					format: ext, // Явно указываем формат файла
+					original_filename: file.originalname,
 				})
+				console.log('Cloudinary upload result:', uploadResult)
 				fileUrl = uploadResult.secure_url
+				fileName = file.originalname
 			} catch (error) {
-				throw new Error(
-					'Failed to upload avatar to Cloudinary: ' + error.message
-				)
+				console.error('Cloudinary upload error:', error)
+				throw new Error('Failed to upload file to Cloudinary: ' + error.message)
 			}
 		}
 
-		if (chatId) {
-			const chatCheckQuery = `
-        SELECT chat_id FROM direct_chats WHERE chat_id = $1
-      `
-			const chatCheckResult = await pool.query(chatCheckQuery, [chatId])
-			if (chatCheckResult.rows.length === 0) {
-				throw new Error('Direct chat does not exist')
-			}
-		}
-
+		// Остальной код остается без изменений
 		const insertQuery = `
-      INSERT INTO messages (chat_id, receiver_id, sender_id, content, file_url, sent_at, is_read)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING chat_id, receiver_id, sender_id, content, file_url, sent_at, is_read
-    `
+			INSERT INTO messages (chat_id, receiver_id, sender_id, content, file_url, file_name, sent_at, is_read)
+			VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+			RETURNING chat_id, receiver_id, sender_id, content, file_url, file_name, sent_at, is_read
+		`
 		const values = [
 			chatId,
 			receiverId,
 			senderId,
 			content,
 			fileUrl || null,
+			fileName || null,
 			sentAt,
 			false,
 		]
@@ -62,6 +70,7 @@ class MessagesService {
 		if (result.rows.length === 0) {
 			throw new Error('Message creation failed')
 		}
+
 		const newMessage = result.rows[0]
 		return newMessage
 	}

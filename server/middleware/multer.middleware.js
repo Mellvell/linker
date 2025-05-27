@@ -1,4 +1,5 @@
 const multer = require('multer')
+const iconv = require('iconv-lite')
 
 // Фильтр для типов файлов
 const fileFilter = (req, file, cb) => {
@@ -11,6 +12,11 @@ const fileFilter = (req, file, cb) => {
 		'application/msword', // .doc
 		'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
 	]
+
+	file.originalname = iconv.decode(
+		Buffer.from(file.originalname, 'binary'),
+		'utf-8'
+	)
 
 	if (allowedTypes.includes(file.mimetype)) {
 		cb(null, true)

@@ -13,7 +13,9 @@ export default function Sidebar() {
 	const { t } = useTranslation('sidebar')
 	return (
 		<aside className={styles.sidebar}>
-			<div className={styles.logo}>Linker</div>
+			<div className={styles.logo}>
+				<p>Linker</p>
+			</div>
 			<nav className={styles.nav}>
 				<SidebarItems>
 					<NavLink

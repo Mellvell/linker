@@ -4,6 +4,7 @@ export default interface Message {
 	receiver_id: number
 	content: string
 	file_url: string | null
+	file_name: string | null
 	sent_at: string
 	is_read: boolean
 }

@@ -1,0 +1,45 @@
+@use '../../assets/styles/variables' as *;
+
+.languageToggle {
+  position: relative;
+  display: inline-flex;
+  width: 150px;
+  height: 35px;
+  border-radius: 20px;
+  background-color: transparent;
+  overflow: hidden;
+  border: 2px solid $color-border;
+
+  .toggleButton {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    z-index: 1;
+
+    &:first-child {
+      left: 0;
+    }
+
+    &:last-child {
+      right: 0;
+    }
+  }
+
+  .activeLeft {
+    background-color: $color-dark-grey;
+    transform: translateX(0);
+    z-index: 2;
+  }
+
+  .activeRight {
+    background-color: $color-dark-grey;
+    transform: translateX(0);
+    z-index: 2;
+  }
+}

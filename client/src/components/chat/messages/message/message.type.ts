@@ -1,6 +1,7 @@
 export default interface MessageProps {
+	text?: string
 	id: number
 	userId: number
-	text: string
-	fileUrl?: string | null
+	fileUrl: string | null
+	fileName: string | null // Оригинальное имя файла
 }

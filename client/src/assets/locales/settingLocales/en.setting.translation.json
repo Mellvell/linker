@@ -1,0 +1,11 @@
+{
+  "title": "Settings",
+  "langue": "langue",
+  "langue_select": "Select langue",
+  "Theme": "Theme",
+  "Information": "Information",
+  "Information_version": "version",
+  "Information_developer": "Developer",
+  "Delete_profile_button": "Delete profile",
+  "Logout_button": "Logout"
+}

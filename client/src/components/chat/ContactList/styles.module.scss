@@ -1,14 +1,38 @@
 @use '../../../assets/styles/variables' as *;
 
 .contactList{
+  width: 100%;
   width: 300px;
   background: transparent;
-  overflow-y: auto;
   
-  ::-webkit-scrollbar { width: 3px; height: 3px;}
-	::-webkit-scrollbar-track {background-color: transparent;}
+  .contactWrap{
+    overflow-y: auto;
+    height: 82vh;
+    box-sizing: border-box; /* Учитывает padding и border в высоте */
+
+  }
 
   h2{
-    padding-bottom: 20px;
+    padding: 13px 5px;
+    border-bottom: 1px solid $color-border;
   }
+}
+/* Стили для скроллбара */
+.contactWrap::-webkit-scrollbar {
+width: 4px; /* Ширина скроллбара */
+}
+
+.contactWrap::-webkit-scrollbar-track {
+background: transparent; /* Цвет фона трека */
+border-radius: 4px;
+}
+
+.contactWrap::-webkit-scrollbar-thumb {
+background: #666; /* Цвет ползунка */
+border-radius: 4px;
+transition: background 0.3s; /* Плавная смена цвета при наведении */
+}
+
+.contactWrap::-webkit-scrollbar-thumb:hover {
+background: #888; /* Цвет ползунка при наведении */
 }

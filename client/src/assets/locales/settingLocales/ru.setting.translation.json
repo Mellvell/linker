@@ -1,0 +1,11 @@
+{
+	"title": "Настройки",
+	"langue": "Язык",
+	"langue_select": "Select langue",
+	"Theme": "Тема",
+	"Information": "Информация",
+	"Information_version": "Версия",
+	"Information_developer": "Разработчик",
+	"Delete_profile_button": "Удалить профиль",
+	"Logout_button": "Выйти"
+}

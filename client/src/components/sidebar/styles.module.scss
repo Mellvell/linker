@@ -7,14 +7,17 @@
 
   display: flex;
   flex-direction: column;
-  gap: 40px;
   border-right: 1px solid  $color-border;
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 24px;
   font-weight: bold;
   text-align: center;
+  padding: 26px 0;
 }
 
 .nav {
