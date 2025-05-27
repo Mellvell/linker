@@ -4,7 +4,7 @@
   min-width: 400px;
   width: fit-content;
   padding: 30px;
-  border: 1px solid $color-border;
+  border: 1px solid  var(--color-border);
   border-radius: $radius-md;
 
   .profileTop {
@@ -25,7 +25,7 @@
     }
 
     .userEmail {
-      color: $color-muted;
+      color: var(--color-muted);
     }
 
     &::after {
@@ -34,7 +34,7 @@
       content: ' ';
       width: 100%;
       height: 3px;
-      background-color: $color-border;
+      background-color: var(--color-border);
     }
   }
 
@@ -52,7 +52,7 @@
         content: ' ';
         width: 100%;
         height: 3px;
-        background-color: $color-border;
+        background-color: var(--color-border);
       }
     }
   }
@@ -63,7 +63,7 @@
 
     button {
       width: 100%;
-      border: 1px solid $color-dark-grey;
+      border: 1px solid var(--color-dark-grey);
 
       &:hover,
       &:active {
@@ -78,7 +78,7 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px;
-    background-color: $color-surface;
+    background-color: var(--color-surface);
     border-radius: $radius-md;
     width: 100%;
     max-width: 400px;
@@ -101,7 +101,7 @@
 
       input {
         padding: 10px;
-        border: 1px solid $color-border;
+        border: 1px solid var(--color-border);
         border-radius: $radius-sm;
         font-size: 1rem;
         outline: none;
@@ -121,6 +121,8 @@
         flex: 1;
         padding: 10px;
         border-radius: $radius-sm;
+        border: 1pn solid var(--color-dark-grey);
+        transition: background .3s;
       }
     }
   }

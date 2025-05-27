@@ -1,4 +1,5 @@
 import LanguageToggle from '../../components/languageToggle'
+import { ThemeToggle } from '../../components/themeToggle'
 import styles from './styles.module.scss'
 
 export default function Settings() {
@@ -16,12 +17,7 @@ export default function Settings() {
 				<div className={styles.settingsSection}>
 					<h2 className={styles.sectionTitle}>Тема</h2>
 					<div className={styles.optionGroup}>
-						<label className={styles.option}>
-							<input type='radio' name='theme' value='light' /> Светлая
-						</label>
-						<label className={styles.option}>
-							<input type='radio' name='theme' value='dark' /> Темная
-						</label>
+						<ThemeToggle />
 					</div>
 				</div>
 				<div className={styles.settingsSection}>

@@ -23,7 +23,7 @@
     width: auto;
     max-width: 90%;
     max-height: 90vh;
-    background: $color-surface;
+    background: var(--color-surface);
     border-radius: 10px;
     padding: 20px;
     animation: slideIn 0.3s ease;

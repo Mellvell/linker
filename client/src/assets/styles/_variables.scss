@@ -1,17 +1,13 @@
+// src/styles/_themes.scss
+
+// Общие переменные (которые не меняются между темами)
 $color-primary: #F54B64;
-$color-primary-alt: #F78361; // Вариант для градиента/ховера
+$color-primary-alt: #F78361;
 $color-secondary: #FFD428;
 $color-dark-grey: #4E586E;
 $color-white: #FFFFFF;
 
-// Дополнительные оттенки
-$color-bg: #1C1E26;          // Основной фон
-$color-surface: #2A2D38;     // Поверхности/карточки
-$color-border: #3B3E47;      // Границы/разделители
-$color-muted: #8B92A1;       // Вторичный текст
-$color-text: #E6E9F0;        // Основной текст
-
-// Статусы
+// Статусы (общие для обеих тем)
 $color-success: #22C55E;
 $color-error: #EF4444;
 $color-warning: #FACC15;
@@ -27,9 +23,9 @@ $shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
 $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
 $shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.2);
 
-// Шрифт
-$font-base: 'Rubik', sans-serif; // Основной шрифт
-$font-heading: 'Nunito', sans-serif; // Шрифт заголовков
+// Шрифты
+$font-base: 'Rubik', sans-serif;
+$font-heading: 'Nunito', sans-serif;
 $font-size-sm: 14px;
 $font-size-base: 16px;
 $font-size-lg: 18px;
@@ -41,3 +37,37 @@ $font-size-h4: 1.5rem;    // 24px
 $font-size-h3: 1.875rem;  // 30px
 $font-size-h2: 2.25rem;   // 36px
 $font-size-h1: 3rem;      // 48px
+
+// Темная тема (ваши текущие переменные)
+[data-theme="dark"] {
+  // Цвета
+  --color-bg: #1C1E26;
+  --color-surface: #2A2D38;
+  --color-border: #3B3E47;
+  --color-muted: #8B92A1;
+  --color-text: #E6E9F0;
+  --select-color: #2a2a3d;
+  --color-dark-grey: #4E586E;
+  
+  // Тени для темной темы
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+// Светлая тема
+[data-theme="light"] {
+  // Цвета
+  --color-bg: #FFFFFF;
+  --color-surface: #F5F5F7;
+  --color-border: #E0E0E0;
+  --color-muted: #757575;
+  --color-text: #333333;
+  --select-color: #dbdbdb;
+  --color-dark-grey: #E0E0E0;
+  
+  // Тени для светлой темы
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.2);
+}

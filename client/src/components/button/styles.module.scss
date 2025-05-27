@@ -1,11 +1,11 @@
 @use '../../assets/styles/variables' as *;
 
 .button{
-  background: $color-dark-grey;
+  background: var(--color-dark-grey);
   padding: 10px 0;
   border: none;
   border-radius: 10px; 
   cursor: pointer;
   transition: background .3s, color .3s;
-  color: $color-text;
+  color: var(--color-text);
 }

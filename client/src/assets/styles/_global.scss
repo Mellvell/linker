@@ -1,7 +1,7 @@
 @use './variables' as *;
 
 body {
-	background: $color-bg;
-	color: $color-text;
+	background: var(--color-bg);
+	color: var(--color-text);
   font-family: $font-base;
 }

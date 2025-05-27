@@ -17,7 +17,7 @@
     content: ' ';
     height: 1px;
     width: 100%;
-    background: $color-border;
+    background: var(--color-border);
     position: absolute;
     top: 0;
     left: 0;
@@ -27,7 +27,7 @@
     content: ' ';
     height: 1px;
     width: 100%;
-    background: $color-border;
+    background: var(--color-border);
     position: absolute;
     bottom: 0;
     left: 0;
@@ -39,7 +39,7 @@
     gap: 5px;
 
     .userUsername {
-      color: $color-muted;
+      color: var(--color-muted);
     }
   }
 }

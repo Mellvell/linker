@@ -8,8 +8,8 @@
   width: 100%;
   flex-direction: column;
   padding: 20px;
-  background: $color-bg;
-  color: $color-text;
+  background: var(--color-bg);
+  color: var(--color-text);
   height: 100%;
   font-family: $font-base;
 
@@ -25,7 +25,7 @@
     .sectionTitle {
       font-size: $font-size-base;
       margin-bottom: 10px;
-      color: $color-muted;
+      color: var(--color-muted);
     }
 
     .optionGroup {
@@ -36,7 +36,7 @@
 
     .infoItem {
       padding: 10px;
-      background: $color-surface;
+      background: var(--color-surface);
       border-radius: $radius-md;
       margin-bottom: 10px;
     }
@@ -44,7 +44,7 @@
     .actionButton {
       padding: 10px 20px;
       background: $color-primary;
-      color: $color-white;
+      color: var(--color-text);
       border: none;
       border-radius: $radius-md;
       cursor: pointer;
@@ -59,7 +59,7 @@
     .logoutButton {
       padding: 10px 20px;
       background: $color-error;
-      color: $color-white;
+      color: var(--color-text);
       border: none;
       border-radius: $radius-md;
       cursor: pointer;

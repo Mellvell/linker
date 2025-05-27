@@ -4,6 +4,8 @@ import { createRoot } from 'react-dom/client'
 import './index.scss'
 import App from './App.tsx'
 
+import { ThemeProvider } from './context/themeContext.tsx'
+
 import { authStore } from './store/auth.store.ts'
 import { userStore } from './store/user.store.ts'
 import { socketStore } from './store/socket.store.ts'
@@ -43,7 +45,9 @@ export const Context = createContext<IStore>({
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<Context.Provider value={{ authStore, userStore, socketStore, messageStore, chatStore }}>
-			<App />
+			<ThemeProvider>
+				<App />
+			</ThemeProvider>
 		</Context.Provider>
 	</StrictMode>
 )
