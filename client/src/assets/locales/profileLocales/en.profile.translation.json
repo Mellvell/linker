@@ -1,8 +1,12 @@
 {
-  "title": "Profile",
+	"title": "Profile",
 	"name": "Name",
 	"surname": "Surname",
 	"username": "Username",
 	"email": "Email",
-	"change_info": "Edit profile"
+	"change_info": "Edit profile",
+	"edit_profile": "Edit Profile",
+	"avatar": "Avatar",
+	"save": "Save",
+	"cancel": "Cancel"
 }

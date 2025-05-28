@@ -5,7 +5,7 @@ import type PopupProps from './popup.types'
 export default function Popup({
 	popupName,
 	children,
-	classNamePopupName,
+	className,
 	isOpen,
 	setIsOpen,
 }: PopupProps) {
@@ -21,7 +21,7 @@ export default function Popup({
 				<div className={styles.popupNameWrapper}>
 					<p
 						onClick={() => setIsOpen(!isOpen)}
-						className={`${styles.popupName} ${classNamePopupName}`}
+						className={`${styles.popupName}`}
 					>
 						{popupName}
 					</p>
@@ -29,7 +29,7 @@ export default function Popup({
 			)}
 			{isOpen && (
 				<div className={styles.popupOverlay} onClick={handleOverlayClick}>
-					<div className={styles.popupContent}>{children}</div>
+					<div className={`${styles.popupContent} ${className}`}>{children}</div>
 				</div>
 			)}
 		</div>

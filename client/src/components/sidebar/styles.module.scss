@@ -1,41 +1,86 @@
 @use '../../assets/styles/variables' as *;
+@use '../../assets/styles/mixins' as *;
 
 .sidebar {
   width: 100%;
   max-width: 220px;
   height: 100vh;
-
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--color-border);
-}
+  background-color: var(--color-bg);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  padding: 26px 0;
-}
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 26px 0;
+    color: var(--color-text);
+  }
 
-.nav {
-  display: flex;
-  flex-direction: column;
-}
+  .nav {
+    display: flex;
+    flex-direction: column;
+  }
 
-.logout {
-  margin-top: auto; 
+  .logout {
+    margin-top: auto;
 
-  a{
-
-    &:hover {
-      color: $color-error;
+    a {
+      &:hover {
+        color: $color-error;
+      }
     }
+  }
+
+  &.sidebarOpen {
+    transform: translateX(0);
   }
 }
 
-.active{
+.burgerButton {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1100;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 24px;
+
+  svg {
+    font-size: 30px;
+  }
+}
+
+.active {
   color: $color-secondary;
+  background-color: var(--select-color);
+}
+
+// Адаптив для мобильных (max-width: 640px)
+@include respond(sm) {
+  .burgerButton {
+    display: block;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    width: 80%;
+    max-width: 250px;
+
+    &.sidebarOpen {
+      transform: translateX(0);
+    }
+  }
 }

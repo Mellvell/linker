@@ -16,7 +16,7 @@
     height: 100%;
     border: none;
     background: none;
-    color: #fff;
+    color: var(--color-text);
     font-size: 16px;
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease;
@@ -34,12 +34,14 @@
   .activeLeft {
     background-color: $color-dark-grey;
     transform: translateX(0);
+    color: invert($color: #000);
     z-index: 2;
   }
 
   .activeRight {
     background-color: $color-dark-grey;
     transform: translateX(0);
+    color: invert($color: #000);
     z-index: 2;
   }
 }

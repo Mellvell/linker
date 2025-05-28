@@ -11,12 +11,12 @@
 
 .ownMessage {
   margin-left: auto; // Прижимает сообщение к правому краю
-  background-color: #3d5c3d; // Цвет для твоих сообщений (можно настроить)
+  background-color: var(--color-surface); // Цвет для твоих сообщений (можно настроить)
 }
 
 .interlocutorMessage {
   margin-right: auto; // Прижимает сообщение к левому краю
-  background-color: #2a3d2a; // Цвет для сообщений собеседника (можно настроить)
+  background-color: var(--color-surface); // Цвет для сообщений собеседника (можно настроить)
 }
 
 .text {
@@ -45,21 +45,29 @@
   background-color: rgba($color-white, 0.1); // Если есть переменная для белого цвета
   border-radius: 4px; // Если есть переменная для радиуса
   text-decoration: none;
-  color: $color-white; // Цвет текста
+  color: var(--color-text); // Цвет текста
   font-size: 20px; // Размер шрифта
   transition: background-color 0.2s ease;
 
   &:hover {
-    background: rgba($color-white, 0.2);
+    background: rgba($color-secondary, 0.2);
   }
 }
 
 .fileIcon {
   font-size: 18px;
-  color: $color-white;
+  color: var(--color-text);
+
+  &:hover{
+    color: $color-secondary;
+  }
 }
 
 .downloadIcon {
   font-size: 16px;
-  color: $color-white;
+  color: var(--color-text);
+
+  &:hover{
+    color: $color-secondary;
+  }
 }

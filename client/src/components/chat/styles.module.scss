@@ -1,8 +1,14 @@
 @use '../../assets/styles/variables' as *;
+@use '../../assets/styles/mixins' as *;
 
 .chatContainer {
 	display: flex;
 	height: 100vh;
+  margin-left: 220px;
+
+  @include respond(sm){
+    margin: 0;
+  }
 
 	.contactListContainer{
 		border-right: 1px solid var(--color-border);

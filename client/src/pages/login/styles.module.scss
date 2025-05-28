@@ -10,8 +10,17 @@
     width: 40%;
     box-sizing: border-box;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    .welcomeMessage {
+      display: none;
+    }
+
+    .registerLink {
+      display: none;
+    }
 
     .loginForm {
       position: relative;
@@ -119,56 +128,43 @@
     }
   }
 
-  // Адаптив для планшетов (max-width: 768px)
-  @include respond(md) {
-    flex-direction: column;
-
-    .rightBlock {
-      width: 100%;
-      height: 60%;
-      padding: 20px;
-      order: 1; // Форма будет сверху
-
-      .loginForm {
-        width: 100%;
-        max-width: 500px;
-        padding: 20px 10px;
-
-        .rightHeading {
-          font-size: $font-size-h4;
-          top: -20px;
-        }
-      }
-    }
-
-    .leftBlock {
-      width: 100%;
-      height: 40%;
-      order: 2; // Текст снизу
-
-      .leftText {
-        h1 {
-          font-size: $font-size-h3;
-        }
-
-        p {
-          font-size: $font-size-base;
-        }
-      }
-    }
-  }
-
   // Адаптив для мобильных (max-width: 640px)
   @include respond(sm) {
     flex-direction: column;
-    height: auto; // Убираем фиксированную высоту, чтобы контент не обрезался
+    height: auto;
 
     .rightBlock {
       width: 100%;
       height: auto;
       padding: 20px;
-      order: 1; // Форма сверху
-      min-height: 60vh; // Минимальная высота для формы
+      min-height: 60vh;
+
+      .welcomeMessage {
+        display: block;
+        text-align: center;
+        margin-bottom: 20px;
+
+        h1 {
+          font-size: $font-size-h3;
+          color: var(--color-text);
+        }
+      }
+
+      .registerLink {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+
+        p {
+          font-size: $font-size-base;
+          color: var(--color-text);
+        }
+
+        .link {
+          color: $color-secondary;
+          text-decoration: underline;
+        }
+      }
 
       .loginForm {
         width: 100%;
@@ -195,26 +191,7 @@
     }
 
     .leftBlock {
-      width: 100%;
-      height: auto;
-      padding: 15px;
-      order: 2; // Текст снизу
-      background: linear-gradient($color-primary, $color-primary-alt);
-
-      .leftText {
-        gap: 5px;
-        justify-content: center;
-
-        h1 {
-          font-size: $font-size-h5;
-          margin: 0;
-        }
-
-        p {
-          font-size: $font-size-sm;
-          margin: 0;
-        }
-      }
+      display: none;
     }
   }
 }

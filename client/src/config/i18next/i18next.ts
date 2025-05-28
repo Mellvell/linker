@@ -28,6 +28,12 @@ import ruProfile from '../../assets/locales/profileLocales/ru.profile.translatio
 import enSearch from '../../assets/locales/searchLocales/en.search.translation.json'
 import ruSearch from '../../assets/locales/searchLocales/ru.search.translation.json'
 
+import enSetting from '../../assets/locales/settingLocales/en.setting.translation.json'
+import ruSetting from '../../assets/locales/settingLocales/ru.setting.translation.json'
+
+import enToggleTheme from '../../assets/locales/toggleThemeLocales/en.toggleTheme.translation.json'
+import ruToggleTheme from '../../assets/locales/toggleThemeLocales/ru.toggleTheme.translation.json'
+
 i18n
 	.use(LanguageDetector) // Автоматическое определение языка
 	.use(initReactI18next) // Интеграция с React
@@ -42,7 +48,9 @@ i18n
 				emptyChat: enEmptyChat,
 				sidebar: enSidebar,
 				profile: enProfile,
-				search: enSearch
+				search: enSearch,
+				setting: enSetting,
+				toggleTheme: enToggleTheme
 			},
 			ru: {
 				login: ruLogin,
@@ -53,7 +61,9 @@ i18n
 				emptyChat: ruEmptyChat,
 				sidebar: ruSidebar,
 				profile: ruProfile,
-				search: ruSearch
+				search: ruSearch,
+				setting: ruSetting,
+				toggleTheme: ruToggleTheme
 			},
 		},
 		fallbackLng: 'en', // Язык по умолчанию

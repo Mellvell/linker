@@ -19,6 +19,7 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const [popupText, setPopupText] = useState('')
 	const [isPopupOpen, setIsPopupOpen] = useState(false) // Новое состояние для попапа
+	const [isLoading, setIsLoading] = useState(false)
 	const { t } = useTranslation('chat')
 
 	const dialogMessages = (messageStore.messages || []).filter(
@@ -30,17 +31,21 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 	)
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		console.log('File Change');
 		const file = e.target.files?.[0]
 		if (file) {
 			setSelectedFile(file)
 			const url = URL.createObjectURL(file)
 			setPreviewUrl(url)
 			setIsPopupOpen(true) // Открываем попап при выборе файла
+			console.log('Open', isPopupOpen)
 		}
+
 	}
 
 	const handleSendWithFile = async () => {
 		if (!selectedFile && !popupText.trim()) return
+		setIsLoading(true)
 
 		try {
 			const messageData = {
@@ -50,6 +55,7 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 				file: selectedFile,
 			}
 			await messageStore.sendMessage(messageData)
+			setIsLoading(false)
 			setSelectedFile(null)
 			setPreviewUrl(null)
 			setPopupText('')
@@ -121,14 +127,28 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 			</div>
 
 			{/* Попап для предпросмотра */}
-			{previewUrl && (
-				<Popup isOpen={isPopupOpen} setIsOpen={setIsPopupOpen}>
+			{isPopupOpen && (
+				<Popup
+					isOpen={isPopupOpen}
+					className={isLoading ? styles.popup : ''}
+					setIsOpen={setIsPopupOpen}
+				>
 					<div className={styles.previewPopup}>
-						<img
-							src={previewUrl}
-							alt='Preview'
-							className={styles.previewImage}
-						/>
+						{previewUrl && selectedFile ? (
+							// Проверяем, является ли файл изображением
+							selectedFile.type.startsWith('image/') ? (
+								<img
+									src={previewUrl}
+									alt='Preview'
+									className={styles.previewImage}
+								/>
+							) : (
+								<div className={styles.filePreview}>
+									<span>📄 {selectedFile.name}</span>{' '}
+									{/* Отображаем имя файла или иконку */}
+								</div>
+							)
+						) : null}
 						<Input
 							type='text'
 							placeholder={t('input_file_text_placeholder')}
@@ -136,20 +156,27 @@ const Chat = observer(({ selectedUser, chatId }: ChatProps) => {
 							onChange={e => setPopupText(e.target.value)}
 							className={styles.popupInput}
 						/>
-						<Button type='button' onClick={handleSendWithFile}>
-							{t('button_file_send')}
-						</Button>
-						<Button
-							type='button'
-							onClick={() => {
-								setSelectedFile(null)
-								setPreviewUrl(null)
-								setPopupText('')
-								setIsPopupOpen(false)
-							}}
-						>
-							{t('button_file_cancel')}
-						</Button>
+						<div className={styles.popupButtons}>
+							<Button
+								className={styles.popupButtons}
+								type='button'
+								onClick={handleSendWithFile}
+							>
+								{t('button_file_send')}
+							</Button>
+							<Button
+								className={styles.popupButtons}
+								type='button'
+								onClick={() => {
+									setSelectedFile(null)
+									setPreviewUrl(null)
+									setPopupText('')
+									setIsPopupOpen(false)
+								}}
+							>
+								{t('button_file_cancel')}
+							</Button>
+						</div>
 					</div>
 				</Popup>
 			)}

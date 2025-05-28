@@ -41,13 +41,14 @@
 
   a {
     width: 100%;
-    display: flex; // Делаем flex-контейнер для выравнивания иконки и текста
-    align-items: center; // Выравниваем по вертикали
+    display: flex;
+    align-items: center;
     padding: 20px;
+    color: inherit;
+    text-decoration: none;
 
     svg {
-      margin-right: 10px; // Отступ между иконкой и текстом
+      margin-right: 10px;
     }
   }
-
 }
