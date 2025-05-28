@@ -46,6 +46,17 @@ const ChatContainer = observer(() => {
 	])
 
 	useEffect(() => {
+		if (
+			selectedContact &&
+			!userStore.contacts.some(c => c.chatId === selectedContact.chatId)
+		) {
+			console.log('if Working');
+			
+			setSelectedContact(null)
+		}
+	}, [userStore.contacts, selectedContact])
+
+	useEffect(() => {
 		if (selectedContact && authStore.user.id) {
 			console.log(
 				'ChatContainer: fetching messages for interlocutor',
@@ -96,6 +107,7 @@ const ChatContainer = observer(() => {
 					<Chat
 						selectedUser={selectedContact.user}
 						chatId={selectedContact.chatId}
+						setSelectedContact={setSelectedContact}
 					/>
 				) : (
 					<EmptyChat />

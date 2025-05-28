@@ -13,6 +13,7 @@ export default function TextField({
 	label,
 	value,
 	onChange,
+	disabled,
 	...props
 }: TextFieldTypes) {
 	return (
@@ -25,6 +26,7 @@ export default function TextField({
 				className={className}
 				value={value}
 				onChange={onChange}
+				disabled={disabled}
         {...props}
 			/>
 			<label>{label}</label>

@@ -3,5 +3,8 @@
 	"button_message": "Send",
 	"input_file_text_placeholder": "Add a description...",
 	"button_file_send": "Send",
-	"button_file_cancel": "Cancel"
+	"button_file_cancel": "Cancel",
+	"status_offline": "Offline",
+	"status_online": "online",
+	"delete_chat": "Delete chat"
 }

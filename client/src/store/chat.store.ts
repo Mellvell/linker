@@ -3,6 +3,8 @@ import ChatService from '../api/services/chat.service'
 import type Chat from '../types/api.types/chat.types'
 import type { User } from '../types/api.types/user.types'
 import UserService from '../api/services/user.service'
+import { userStore } from './user.store'
+import { authStore } from './auth.store'
 
 export default class ChatStore {
 	chats: Chat[] = []
@@ -48,15 +50,29 @@ export default class ChatStore {
 		}
 	}
 
-	async createChats(
-		receiverId: string
-	): Promise<
-		{
-			chat_id: number
-			user1_id: number
-			user2_id: number
-			created_at: string
-		}> {
+	async deleteChat(chatId: number, receiverId: number) {
+		this.setIsLoading(true)
+		try {
+			const response = await ChatService.deleteChat(chatId, receiverId)
+			console.log(response)
+
+			// Удаляем чат из массива chats
+			this.setChats(this.chats.filter(chat => chat.chat_id !== chatId))
+			userStore.getUsersForContactList(authStore.user.id) // Обновляем контакты после удаления чата
+			this.setIsLoading(false)
+		} catch (error) {
+			console.error(error)
+			this.setIsLoading(false)
+			throw error
+		}
+	}
+
+	async createChats(receiverId: string): Promise<{
+		chat_id: number
+		user1_id: number
+		user2_id: number
+		created_at: string
+	}> {
 		this.setIsLoading(true)
 		try {
 			const response = await ChatService.createChat(receiverId)

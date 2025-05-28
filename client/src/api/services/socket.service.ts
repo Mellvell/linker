@@ -1,6 +1,9 @@
 import { io, Socket } from 'socket.io-client'
 import type { User } from '../../types/api.types/user.types'
 
+import type Message from '../../types/api.types/messages.type'
+import type Chat from '../../types/api.types/chat.types'
+
 export type SocketEvents = {
 	// Типы событий сокета
 	'file:uploaded': (file: { id: string; url: string; name: string }) => void
@@ -8,7 +11,9 @@ export type SocketEvents = {
 	'users:online': (userIds: string[]) => void
 	'users:get': () => void
   'say:hello': (message: string) => void
-	'newMessage': (message: { id: number; senderid: number; receiverid: number; message: string; fileurl: string | null; createdat: string }) => void
+	'newMessage': (message: Message) => void
+	'newChat': (chat: Chat) => void
+	'deleteChat': (payload: { chatId: number }) => void
 }
 
 class SocketService {

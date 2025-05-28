@@ -28,34 +28,42 @@ class ChatService {
     `
 		const insertResult = await pool.query(insertQuery, [senderId, receiverId])
 		const newChat = insertResult.rows[0]
-
-		const participants = [newChat.user_id1, newChat.user_id2]
-		participants.forEach(participant => {
-			const socketId = getReceiverSocketId(participant)
-			if (socketId) {
-				getIO()
-					.to(socketId)
-					.emit('newChat', {
-						chatId: newChat.id,
-						participants: [newChat.user_id1, newChat.user_id2],
-					})
-			}
-		})
 		return newChat
 	}
 
+	async deleteChat(chatId, userId) {
+		if (!chatId || !userId) {
+			throw new Error('Chat ID and User ID are required')
+		}
+
+		const deleteQuery = `
+    DELETE FROM direct_chats
+    WHERE chat_id = $1 AND (user1_id = $2 OR user2_id = $2)
+    RETURNING chat_id
+    `
+		const result = await pool.query(deleteQuery, [chatId, userId])
+
+		if (result.rows.length === 0) {
+			throw new Error(
+				'Chat not found or you do not have permission to delete it'
+			)
+		}
+
+		return { success: true, chatId: result.rows[0].chat_id }
+	}
+
 	async getChats(user_id) {
-		if(!user_id){ 
+		if (!user_id) {
 			throw new Error('missing user id')
 		}
-		
+
 		const query = `
 		SELECT * FROM direct_chats
 		WHERE user1_id = $1 OR user2_id = $1
 		`
 		const result = await pool.query(query, [user_id])
-		
-		return result.rows 
+
+		return result.rows
 	}
 }
 

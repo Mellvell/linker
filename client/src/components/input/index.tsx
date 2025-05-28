@@ -10,6 +10,7 @@ export default function Input({
 	className,
   value,
   onChange,
+	disabled,
   ...props
 }: InputTypes) {
 	return (
@@ -21,6 +22,7 @@ export default function Input({
 			className={`${styles.input} `}
       value={value}
       onChange={onChange}  
+			disabled={disabled}
       {...props}
 		/>
 	)

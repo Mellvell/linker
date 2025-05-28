@@ -6,4 +6,5 @@ export default interface InputTypes {
   className?: string;
 	value?: string | number;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+	disabled?: boolean;
 }

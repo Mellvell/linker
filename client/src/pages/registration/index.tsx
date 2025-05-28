@@ -13,18 +13,20 @@ export default function Registration() {
 	const [surname, setSurname] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [isLoading, setIsLoading] = useState(false)
 	const { t } = useTranslation('registration')
-
 	const { authStore } = useContext(Context)
 	const navigate = useNavigate()
 
-	const handleRegistration = (
-		name: string,
-		surname: string,
-		email: string,
-		password: string
-	) => {
-		authStore.registration(name, surname, email, password, navigate)
+	const handleRegistration = async (name: string, surname: string, email: string, password: string) => {
+		try {
+			setIsLoading(true)
+			await authStore.registration(name, surname, email, password, navigate)
+		} catch (error) {
+			// Error is handled by authStore.error
+		} finally {
+			setIsLoading(false)
+		}
 	}
 
 	return (
@@ -33,43 +35,58 @@ export default function Registration() {
 				<div className={styles.welcomeMessage}>
 					<h1 dangerouslySetInnerHTML={{ __html: t('welcome_message') }} />
 				</div>
+					{authStore.error && (
+						<div className={styles.errorMessage}>
+							{t(authStore.error) || authStore.error}
+						</div>
+					)}
+					{isLoading && (
+						<div className={styles.loadingSpinner}>
+							<div className={styles.spinner}></div>
+						</div>
+					)}
 				<Form className={styles.registerForm}>
 					<h2 className={styles.registerHeading}>{t('title')}</h2>
 					<TextField
 						onChange={e => setName(e.target.value)}
 						value={name}
-						className={styles.input}
+						// className={styles.input}
 						type='text'
 						label={t('name_label')}
+						disabled={isLoading}
 					/>
 					<TextField
 						onChange={e => setSurname(e.target.value)}
 						value={surname}
-						className={styles.input}
+						// className={styles.input}
 						type='text'
 						label={t('surname_label')}
+						disabled={isLoading}
 					/>
 					<TextField
 						onChange={e => setEmail(e.target.value)}
 						value={email}
-						className={styles.input}
+						// className={styles.input}
 						type='text'
 						label={t('email_label')}
+						disabled={isLoading}
 					/>
 					<TextField
 						onChange={e => setPassword(e.target.value)}
 						value={password}
-						className={styles.input}
+						// className={styles.input}
 						type='password'
 						label={t('password_label')}
+						disabled={isLoading}
 					/>
 					<div className={styles.registerButtonWrap}>
 						<Button
 							type='button'
 							onClick={() => handleRegistration(name, surname, email, password)}
 							className={styles.registerButton}
+							disabled={isLoading}
 						>
-							{t('button_sign_up')}
+							{isLoading ? t('loading') : t('button_sign_up')}
 						</Button>
 					</div>
 					<div className={styles.loginLink}>

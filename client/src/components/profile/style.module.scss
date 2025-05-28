@@ -78,6 +78,36 @@
     }
   }
 
+  .popup {
+    position: relative;
+    place-content: center;
+    place-items: center;
+    overflow: hidden;
+    padding: 10px;
+  
+    &::before {
+      content: ' ';
+      position: absolute;
+      width: 200px;
+      background-image: linear-gradient(
+        180deg,
+        $color-primary,
+        $color-primary-alt
+      );
+      height: 150%;
+      animation: rotBGimg 3s linear infinite;
+      transition: all 0.2s linear;
+    }
+  
+    &::after {
+      content: ' ';
+      position: absolute;
+      inset: 5px;
+      border-radius: 15px;
+    }
+  }
+  
+
   // Стили для формы в popup
   .editForm {
     display: flex;
@@ -88,6 +118,7 @@
     border-radius: $radius-md;
     width: 100%;
     max-width: 400px;
+    z-index: 10;
 
     h3 {
       margin-bottom: 10px;
@@ -132,4 +163,13 @@
       }
     }
   }
+}
+
+@keyframes rotBGimg {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }

@@ -10,6 +10,7 @@ export default function Profile() {
 	const [isOpen, setIsOpen] = useState(false)
 	const { authStore } = useContext(Context)
 	const { t } = useTranslation('profile')
+	const [isLoading, setIsLoading] = useState(false)
 
 	// Состояние для полей формы
 	const [formData, setFormData] = useState({
@@ -33,6 +34,7 @@ export default function Profile() {
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault()
 		try {
+			setIsLoading(true)
 			// Создаем FormData для отправки файла и текстовых данных
 			const formDataToSend = new FormData()
 			formDataToSend.append('name', formData.name)
@@ -46,6 +48,7 @@ export default function Profile() {
 			// Предполагается, что authStore.updateUser принимает FormData
 			await authStore.updateUser(formDataToSend)
 			setIsOpen(false) // Закрываем popup после успешного обновления
+			setIsLoading(false)
 		} catch (error) {
 			console.error('Ошибка при обновлении профиля:', error)
 		}
@@ -88,7 +91,7 @@ export default function Profile() {
 					{t('change_info')}
 				</Button>
 			</div>
-			<Popup isOpen={isOpen} setIsOpen={setIsOpen}>
+			<Popup isOpen={isOpen} className={isLoading ? styles.popup : ''} setIsOpen={setIsOpen}>
 				<form onSubmit={handleSubmit} className={styles.editForm}>
 					<h3>{t('edit_profile')}</h3>
 					<div className={styles.formGroup}>
