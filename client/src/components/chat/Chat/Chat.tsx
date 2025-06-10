@@ -7,21 +7,19 @@ import Button from '../../button'
 import { observer } from 'mobx-react-lite'
 import { Context } from '../../../main'
 import ChatSkeleton from '../Skeleton/chatSkeleton/ChatSkeleton'
-import Avatar from '../../avatar'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import Popup from '../../popup'
 import { useTranslation } from 'react-i18next'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import ChatHeader from './ChatHeader/ChatHeader'
 
 const Chat = observer(({ selectedUser, chatId, setSelectedContact }: ChatProps) => {
-	const { authStore, messageStore, socketStore, chatStore, userStore} = useContext(Context)
+	const { authStore, messageStore } = useContext(Context)
 	const [textMessage, setTextMessage] = useState('')
 	const [selectedFile, setSelectedFile] = useState<File | null>(null)
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const [popupText, setPopupText] = useState('')
 	const [isPopupOpen, setIsPopupOpen] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
-	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const { t } = useTranslation('chat')
 
 	const dialogMessages = (messageStore.messages || []).filter(
@@ -31,20 +29,6 @@ const Chat = observer(({ selectedUser, chatId, setSelectedContact }: ChatProps) 
 			(msg.sender_id === selectedUser.id &&
 				msg.receiver_id === authStore.user.id)
 	)
-
-	const handleDeleteChat = async () => {
-		try {
-			await chatStore.deleteChat(chatId, selectedUser.id)
-			setIsMenuOpen(false)
-			// Обновляем контакты, исключая удалённый чат
-			userStore.setContacts(
-				userStore.contacts.filter(contact => contact.chatId !== chatId)
-			)
-			setSelectedContact(null)
-		} catch (error) {
-			console.error('Error deleting chat:', error)
-		}
-	}
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		console.log('File Change');
@@ -102,49 +86,7 @@ const Chat = observer(({ selectedUser, chatId, setSelectedContact }: ChatProps) 
 
 	return (
 		<form className={styles.chat} onSubmit={handleSendMessage}>
-			<div className={styles.chatHeader}>
-				<div className={styles.userInfo}>
-					<Avatar avatar={selectedUser.avatar} maxWidth='50px' />
-					<div>
-						<h5>{selectedUser.name}</h5>
-						<p
-							className={
-								socketStore.onlineUserIds.includes(String(selectedUser.id))
-									? styles.online
-									: styles.status
-							}
-						>
-							{socketStore.onlineUserIds.includes(String(selectedUser.id))
-								? t('status_online')
-								: t('status_offline')}
-						</p>
-					</div>
-				</div>
-
-				{/* Кнопка меню с выпадающим списком */}
-				<div className={styles.chatMenu}>
-					<Button
-						type='button'
-						className={styles.menuButton}
-						onClick={() => setIsMenuOpen(!isMenuOpen)}
-					>
-						<MoreVertIcon /> {/* Иконка трех точек */}
-					</Button>
-
-					{isMenuOpen && (
-						<div className={styles.dropdownMenu}>
-							<button
-								type='button'
-								className={styles.menuItem}
-								onClick={handleDeleteChat}
-							>
-								{t('delete_chat')}
-							</button>
-						</div>
-					)}
-				</div>
-			</div>
-
+			<ChatHeader selectedUser={selectedUser} setSelectedContact={setSelectedContact} chatId={chatId} />
 			<Messages messages={dialogMessages} />
 
 			{/* Остальной код остается без изменений */}
