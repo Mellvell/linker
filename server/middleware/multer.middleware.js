@@ -6,11 +6,11 @@ const fileFilter = (req, file, cb) => {
 	const allowedTypes = [
 		'image/jpeg',
 		'image/png',
-		'image/gif', // Изображения
-		'text/plain', // Текстовые файлы (.txt)
-		'application/pdf', // PDF
-		'application/msword', // .doc
-		'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+		'image/gif', 
+		'text/plain', 
+		'application/pdf', 
+		'application/msword', 
+		'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
 	]
 
 	file.originalname = iconv.decode(
@@ -32,8 +32,8 @@ const fileFilter = (req, file, cb) => {
 
 // Инициализация Multer с хранением в памяти
 const upload = multer({
-	storage: multer.memoryStorage(), // Храним файл в памяти
-	limits: { fileSize: 10 * 1024 * 1024 }, // Ограничение размера файла (10MB)
+	storage: multer.memoryStorage(),
+	limits: { fileSize: 10 * 1024 * 1024 }, 
 	fileFilter: fileFilter,
 })
 

@@ -15,7 +15,6 @@ export default class MessagesService {
 	}) {
 		try {
 			const formData = new FormData()
-			// Добавляем данные в формате JSON в поле `data`
 			formData.append(
 				'data',
 				JSON.stringify({
@@ -25,7 +24,7 @@ export default class MessagesService {
 					file: messageData.file
 				})
 			)
-			// Добавляем файл, если он есть
+
 			if (messageData.file) {
 				formData.append('file', messageData.file)
 			}
@@ -36,10 +35,10 @@ export default class MessagesService {
 					'Content-Type': 'multipart/form-data',
 				},
 			})
-			return response // Возвращаем полный ответ
+			return response
 		} catch (error) {
 			console.error('MessagesService: error sending message', error)
-			throw error // Пробрасываем ошибку для обработки в сторе
+			throw error 
 		}
 	}
 }

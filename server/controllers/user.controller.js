@@ -45,7 +45,7 @@ class UserController {
 			console.log('Request body:', req.body)
 			console.log('Request file:', req.file)
 
-			const userId = req.user.id // Предпочитаем req.user.id
+			const userId = req.user.id 
 			const userData = req.body
 			const avatar = req.file
 			console.log('Parsed data:', userData);
@@ -90,20 +90,16 @@ class UserController {
 	async getSearchUser(req, res, next) {
 		try {
 			console.log('getSearchUser')
-			const { query } = req.query // <-- исправлено
+			const { query } = req.query 
 			console.log(`search: ${query}`)
 
-			const users = await userService.getSearchUser(query) // <-- передаём query
+			const users = await userService.getSearchUser(query) 
 			return res.status(200).json(users)
 		} catch (error) {
 			next(error)
 		}
 	}
 
-	async update(req, res, next) {
-	}
-
-	async delete(req, res, next) {}
 }
 
 module.exports = new UserController()

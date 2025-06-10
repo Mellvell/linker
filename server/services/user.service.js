@@ -144,7 +144,7 @@ class UserService {
 			surname || user.rows[0].surname,
 			email	|| user.rows[0].email,
 			username || user.rows[0].username,
-			avatarUrl || user.rows[0].avatar, // Используем существующий аватар, если новый не предоставлен
+			avatarUrl || user.rows[0].avatar,
 			userId,
 		]
 
@@ -206,11 +206,9 @@ class UserService {
 			throw ApiError.BadRequest('Поисковый запрос не указан')
 		}
 
-		// Удаляем символ @ из запроса, если он есть (для username)
 		const cleanedSearch = search.replace(/^@/, '').trim()
 
 		try {
-			// Поиск по username или name с использованием ILIKE
 			const users = await pool.query(
 				`SELECT * FROM users WHERE username ILIKE $1 OR name ILIKE $1`,
 				[`%${cleanedSearch}%`]
@@ -220,15 +218,12 @@ class UserService {
 				return []
 			}
 
-			// Преобразуем результаты в DTO
 			const userDto = users.rows.map(user => new UserDto(user))
 			return userDto
 		} catch (error) {
-			// Если ошибка уже является ApiError, пробрасываем её
 			if (error instanceof ApiError) {
 				throw error
 			}
-			// Иначе пробрасываем серверную ошибку
 			throw ApiError.Internal('Ошибка при поиске пользователей')
 		}
 	}

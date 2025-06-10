@@ -6,13 +6,10 @@ import Registration from '../../pages/registration'
 import NotFound from '../../pages/notFound'
 import Main from '../../pages/main'
 
-import { useAuthRedirect } from '../../hooks/useAuthRedirect/useAuthRedirect'
 import ProfilePage from '../../pages/profile'
 import Settings from '../../pages/settings'
 
-export default function Router() {
-  // useAuthRedirect()
-  
+export default function Router() {  
   return (
     <>
       <Routes> 

@@ -55,10 +55,8 @@ export default class ChatStore {
 		try {
 			const response = await ChatService.deleteChat(chatId, receiverId)
 			console.log(response)
-
-			// Удаляем чат из массива chats
 			this.setChats(this.chats.filter(chat => chat.chat_id !== chatId))
-			userStore.getUsersForContactList(authStore.user.id) // Обновляем контакты после удаления чата
+			userStore.getUsersForContactList(authStore.user.id) 
 			this.setIsLoading(false)
 		} catch (error) {
 			console.error(error)

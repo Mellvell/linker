@@ -69,19 +69,15 @@ export default function Search() {
 	const handleCreateChat = async () => {
 		if (selectedUser && setSelectedContact) {
 			try {
-				// Создаем чат
 				const chat = await chatStore.createChats(selectedUser.id.toString())
 
-				// Обновляем список контактов
 				await userStore.getUsersForContactList(authStore.user.id)
 
-				// Устанавливаем выбранный контакт
 				setSelectedContact({
 					user: selectedUser,
-					chatId: chat.chat_id, // Предполагается, что createChats возвращает объект с id чата
+					chatId: chat.chat_id, 
 				})
 
-				// Закрываем попап
 				setIsPopupOpen(false)
 				setSelectedUser(null)
 			} catch (err) {

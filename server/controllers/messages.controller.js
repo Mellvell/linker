@@ -12,8 +12,7 @@ class MessagesController {
 			const file = req.file
 			console.log('Parsed data:', parsedData);
 			
-			// Проверяем, что senderId берется из токена, если не предоставлен
-			const sender_id = req.user.id // Предпочитаем req.user.id
+			const sender_id = req.user.id 
 			const newMessage = await messagesService.createMessage(
 				sender_id,
 				receiver_id,
@@ -25,7 +24,6 @@ class MessagesController {
 			const receiverSocketId = getReceiverSocketId(receiver_id)
 			console.log('Receiver socket ID:', receiverSocketId)
 
-			// Отправляем WebSocket-сообщение только если receiverSocketId существует
 			if (receiverSocketId) {
 				console.log('Emitting newMessage to receiver:', receiverSocketId)
 				req.io.to(receiverSocketId).emit('newMessage', newMessage)

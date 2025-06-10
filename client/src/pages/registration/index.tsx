@@ -50,7 +50,6 @@ export default function Registration() {
 					<TextField
 						onChange={e => setName(e.target.value)}
 						value={name}
-						// className={styles.input}
 						type='text'
 						label={t('name_label')}
 						disabled={isLoading}
@@ -58,7 +57,6 @@ export default function Registration() {
 					<TextField
 						onChange={e => setSurname(e.target.value)}
 						value={surname}
-						// className={styles.input}
 						type='text'
 						label={t('surname_label')}
 						disabled={isLoading}
@@ -66,7 +64,6 @@ export default function Registration() {
 					<TextField
 						onChange={e => setEmail(e.target.value)}
 						value={email}
-						// className={styles.input}
 						type='text'
 						label={t('email_label')}
 						disabled={isLoading}
@@ -74,7 +71,6 @@ export default function Registration() {
 					<TextField
 						onChange={e => setPassword(e.target.value)}
 						value={password}
-						// className={styles.input}
 						type='password'
 						label={t('password_label')}
 						disabled={isLoading}

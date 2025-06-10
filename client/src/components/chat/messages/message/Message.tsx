@@ -50,7 +50,7 @@ export default function Message({
 						</div>
 					) : (
 						<a
-							href={getDownloadUrl(fileUrl, fileName || undefined)} // Модифицируем URL для скачивания
+							href={getDownloadUrl(fileUrl, fileName || undefined)}
 							download
 							className={styles.fileLink}
 							target='_blank'

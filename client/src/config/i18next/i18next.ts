@@ -66,9 +66,9 @@ i18n
 				toggleTheme: ruToggleTheme
 			},
 		},
-		fallbackLng: 'en', // Язык по умолчанию
+		fallbackLng: 'en',
 		interpolation: {
-			escapeValue: false, // React экранирует значения
+			escapeValue: false, 
 		},
 		detection: {
 			order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],

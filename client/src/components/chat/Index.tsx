@@ -11,8 +11,7 @@ import ChatContainerSkeleton from './Skeleton'
 import Search from '../search'
 
 const ChatContainer = observer(() => {
-	const { authStore, userStore, socketStore, messageStore, chatStore } =
-		useContext(Context)
+	const { authStore, userStore, socketStore, messageStore, chatStore } = useContext(Context)
 	const [selectedContact, setSelectedContact] = useState<{
 		user: User
 		chatId: number

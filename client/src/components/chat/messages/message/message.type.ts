@@ -3,5 +3,5 @@ export default interface MessageProps {
 	id: number
 	userId: number
 	fileUrl: string | null
-	fileName: string | null // Оригинальное имя файла
+	fileName: string | null 
 }

@@ -8,7 +8,7 @@ export function useAuthRedirect() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		console.log('useAuthRedirect: checking auth') // Страт хука для проверки авторизации
+		console.log('useAuthRedirect: checking auth')
 		const token = localStorage.getItem('token')
 
 		if (!token) {

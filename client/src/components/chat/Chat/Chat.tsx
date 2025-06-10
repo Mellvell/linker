@@ -12,15 +12,14 @@ import AttachFileIcon from '@mui/icons-material/AttachFile'
 import Popup from '../../popup'
 import { useTranslation } from 'react-i18next'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { userStore } from '../../../store/user.store'
 
 const Chat = observer(({ selectedUser, chatId, setSelectedContact }: ChatProps) => {
-	const { authStore, messageStore, socketStore, chatStore} = useContext(Context)
+	const { authStore, messageStore, socketStore, chatStore, userStore} = useContext(Context)
 	const [textMessage, setTextMessage] = useState('')
 	const [selectedFile, setSelectedFile] = useState<File | null>(null)
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 	const [popupText, setPopupText] = useState('')
-	const [isPopupOpen, setIsPopupOpen] = useState(false) // Новое состояние для попапа
+	const [isPopupOpen, setIsPopupOpen] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const { t } = useTranslation('chat')
@@ -35,9 +34,12 @@ const Chat = observer(({ selectedUser, chatId, setSelectedContact }: ChatProps) 
 
 	const handleDeleteChat = async () => {
 		try {
-			await chatStore.deleteChat(chatId ,selectedUser.id) // currentChatId должен быть доступен в компоненте
+			await chatStore.deleteChat(chatId, selectedUser.id)
 			setIsMenuOpen(false)
-			userStore.getUsersForContactList(authStore.user.id)
+			// Обновляем контакты, исключая удалённый чат
+			userStore.setContacts(
+				userStore.contacts.filter(contact => contact.chatId !== chatId)
+			)
 			setSelectedContact(null)
 		} catch (error) {
 			console.error('Error deleting chat:', error)
@@ -51,7 +53,7 @@ const Chat = observer(({ selectedUser, chatId, setSelectedContact }: ChatProps) 
 			setSelectedFile(file)
 			const url = URL.createObjectURL(file)
 			setPreviewUrl(url)
-			setIsPopupOpen(true) // Открываем попап при выборе файла
+			setIsPopupOpen(true)
 			console.log('Open', isPopupOpen)
 		}
 
@@ -73,7 +75,7 @@ const Chat = observer(({ selectedUser, chatId, setSelectedContact }: ChatProps) 
 			setSelectedFile(null)
 			setPreviewUrl(null)
 			setPopupText('')
-			setIsPopupOpen(false) // Закрываем попап после отправки
+			setIsPopupOpen(false)
 		} catch (error) {
 			console.error('Failed to send message with file:', error)
 		}

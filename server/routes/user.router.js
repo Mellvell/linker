@@ -9,7 +9,6 @@ const userRouter = Router();
 userRouter.post('/registration', validation.validateRegistration,  userController.registration);
 userRouter.post('/login', validation.validateLogin, userController.login);
 userRouter.put('/update', authMiddleware, upload.single('avatar'), userController.updateUser);
-userRouter.post('/delete', userController.delete);
 userRouter.post('/logout', userController.logout);
 userRouter.get('/refresh', userController.refresh); 
 

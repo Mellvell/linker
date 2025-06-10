@@ -3,7 +3,7 @@ import type { User } from '../types/api.types/user.types'
 import UserService from '../api/services/user.service'
 
 class UserStore {
-	contacts: { user: User; chatId: number }[] = [] // Обновленный тип
+	contacts: { user: User; chatId: number }[] = [] 
 	isLoading = false
 	error: string | null = null
 

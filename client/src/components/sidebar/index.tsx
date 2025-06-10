@@ -7,15 +7,21 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import SidebarItems from './sidebarItems'
+import { Context } from '../../main'
 
 export default function Sidebar() {
 	const { t } = useTranslation('sidebar')
+	const { authStore } = useContext(Context)
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen)
+	}
+
+	const handelLogout = () => {
+
 	}
 
 	return (
@@ -61,7 +67,10 @@ export default function Sidebar() {
 					</SidebarItems>
 				</nav>
 				<SidebarItems className={styles.logout}>
-					<NavLink to={'/logout'} onClick={() => setIsMenuOpen(false)}>
+					<NavLink to={'/login'} onClick={() => {
+						authStore.logout()
+						setIsMenuOpen(false)
+					}}>
 						<LogoutOutlinedIcon />
 						{t('sidebar_logout')}
 					</NavLink>

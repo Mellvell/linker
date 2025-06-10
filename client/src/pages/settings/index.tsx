@@ -3,9 +3,19 @@ import { ThemeToggle } from '../../components/themeToggle'
 import styles from './styles.module.scss'
 import Button from '../../components/button'
 import { useTranslation } from 'react-i18next'
+import { useContext } from 'react'
+import { Context } from '../../main'
+import { useNavigate } from 'react-router'
 
 export default function Settings() {
 	const { t } = useTranslation('setting')
+	const { authStore } = useContext(Context)
+	const navigate = useNavigate()
+
+	const handelLogout = () => {
+		authStore.logout()
+		navigate('/login')
+	}
 
 	return (
 		<div className={styles.settingsContainer}>
@@ -34,10 +44,7 @@ export default function Settings() {
 					<div className={styles.infoItem}>© 2025 Linker</div>
 				</div>
 				<div className={styles.settingsSectionButton}>
-					<Button type='button' className={styles.actionButton}>
-						{t('Delete_profile_button')}
-					</Button>
-					<Button type='button' className={styles.logoutButton}>
+					<Button type='button' onClick={() => handelLogout} className={styles.logoutButton}>
 						{t('Logout_button')}
 					</Button>
 				</div>

@@ -1,4 +1,4 @@
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { socketService } from '../api/services/socket.service'
 import { messageStore } from './message.store'
 
@@ -53,10 +53,7 @@ class SocketStore {
 		)
 
 		socketService.on('newChat', (data) => {
-			// data.chatId, data.participants
-  		// Проверяем, что текущий пользователь — участник
 			console.log(data);
-   		 	// Обновляем список чатов и контактов
    		chatStore.getChats()
     	userStore.getUsersForContactList(authStore.user.id)
 		})

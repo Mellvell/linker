@@ -1,6 +1,4 @@
 const pool = require('../config/db')
-const { getReceiverSocketId } = require('../socket/socket')
-const { getIO } = require('../socket/io')
 
 class ChatService {
 	async createChat(senderId, receiverId) {

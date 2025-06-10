@@ -12,13 +12,12 @@ export default function Profile() {
 	const { t } = useTranslation('profile')
 	const [isLoading, setIsLoading] = useState(false)
 
-	// Состояние для полей формы
 	const [formData, setFormData] = useState({
 		name: authStore.user.name,
 		surname: authStore.user.surname,
 		username: authStore.user.username,
 		email: authStore.user.email,
-		avatar: null, // Добавляем поле для файла
+		avatar: null, 
 	})
 
 	// Обработчик изменения полей формы
@@ -26,7 +25,7 @@ export default function Profile() {
 		const { name, value, files } = e.target
 		setFormData(prev => ({
 			...prev,
-			[name]: files ? files[0] : value, // Если это файл, сохраняем первый файл
+			[name]: files ? files[0] : value,
 		}))
 	}
 
@@ -35,7 +34,6 @@ export default function Profile() {
 		e.preventDefault()
 		try {
 			setIsLoading(true)
-			// Создаем FormData для отправки файла и текстовых данных
 			const formDataToSend = new FormData()
 			formDataToSend.append('name', formData.name)
 			formDataToSend.append('surname', formData.surname)
@@ -45,9 +43,8 @@ export default function Profile() {
 				formDataToSend.append('avatar', formData.avatar)
 			}
 
-			// Предполагается, что authStore.updateUser принимает FormData
 			await authStore.updateUser(formDataToSend)
-			setIsOpen(false) // Закрываем popup после успешного обновления
+			setIsOpen(false) 
 			setIsLoading(false)
 		} catch (error) {
 			console.error('Ошибка при обновлении профиля:', error)

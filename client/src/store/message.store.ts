@@ -1,5 +1,5 @@
 import MessagesService from '../api/services/message.service'
-import { makeAutoObservable, action } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 import type Message from '../types/api.types/messages.type'
 
@@ -29,7 +29,6 @@ class MessageStore {
 	}
 
 	async getMessages(residerId: string): Promise<Message[] | any> {
-		// Изменил тип на number
 		this.setIsLoading(true)
 		this.setError(null)
 		try {
@@ -38,7 +37,7 @@ class MessageStore {
 			console.log('MessageStore: received response', response)
 
 			if (response && Array.isArray(response)) {
-				this.setMessages(response) // Прямое присваивание массива
+				this.setMessages(response) 
 				return response
 			}
 			return []
@@ -56,7 +55,7 @@ class MessageStore {
 		chat_id: number
 		receiver_id: number
 		content: string
-		file?: File | null // Добавляем поле для файла
+		file?: File | null
 	}): Promise<void> {
 		this.setError(null)
 		try {

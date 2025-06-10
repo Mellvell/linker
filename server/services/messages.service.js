@@ -32,9 +32,9 @@ class MessagesService {
 			}
 
 			try {
-				const ext = path.extname(file.originalname).replace('.', '') // Получаем расширение без точки (например, 'docx')
+				const ext = path.extname(file.originalname).replace('.', '') 
 				const dataUri = parser.format(ext, file.buffer)
-				console.log('Data URI start:', dataUri.content.substring(0, 50)) // Первые 50 символов
+				console.log('Data URI start:', dataUri.content.substring(0, 50)) 
 				const uploadResult = await cloudinary.uploader.upload(dataUri.content, {
 					folder: 'messages',
 					resource_type: 'auto',
@@ -50,7 +50,6 @@ class MessagesService {
 			}
 		}
 
-		// Остальной код остается без изменений
 		const insertQuery = `
 			INSERT INTO messages (chat_id, receiver_id, sender_id, content, file_url, file_name, sent_at, is_read)
 			VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
