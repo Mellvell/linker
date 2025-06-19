@@ -7,5 +7,6 @@
 	"button_sign_up": "Sign Up",
 	"welcome_message": "Welcome to <span>LINKER</span>.",
 	"has_account": "You have an account?",
-	"sign_in_link": "Sign In."
+	"sign_in_link": "Sign In.",
+	"loading": "Loading..."
 }

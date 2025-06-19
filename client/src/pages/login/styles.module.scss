@@ -162,7 +162,6 @@
 
         .link {
           color: $color-secondary;
-          text-decoration: underline;
         }
       }
 
@@ -194,4 +193,26 @@
       display: none;
     }
   }
+}
+
+
+.errorContainer {
+  width: 80%;
+  max-width: 400px;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Чтобы не перекрывался заголовком */
+}
+
+.errorMessage {
+  background-color: $color-error;
+  color: $color-white;
+  padding: 12px 16px;
+  border-radius: $radius-md;
+  font-size: $font-size-base;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 1px solid darken($color-error, 10%);
 }

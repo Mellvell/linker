@@ -35,16 +35,18 @@ export default function Registration() {
 				<div className={styles.welcomeMessage}>
 					<h1 dangerouslySetInnerHTML={{ __html: t('welcome_message') }} />
 				</div>
-					{authStore.error && (
+				{authStore.error && (
+					<div className={styles.errorContainer}>
 						<div className={styles.errorMessage}>
 							{t(authStore.error) || authStore.error}
 						</div>
-					)}
-					{isLoading && (
-						<div className={styles.loadingSpinner}>
-							<div className={styles.spinner}></div>
-						</div>
-					)}
+					</div>
+				)}
+				{isLoading && (
+					<div className={styles.loadingSpinner}>
+						<div className={styles.spinner}></div>
+					</div>
+				)}
 				<Form className={styles.registerForm}>
 					<h2 className={styles.registerHeading}>{t('title')}</h2>
 					<TextField

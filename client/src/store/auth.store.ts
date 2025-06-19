@@ -50,8 +50,16 @@ class AuthStore {
 			this.setAuth(true)
 			this.setUser(response.data.user)
 			navigate('/')
-		} catch (error) {
-			this.setError(error instanceof Error ? error.message : 'Login failed')
+		} catch (error: Error | any) {
+			let errorMessage = 'Login failed'
+			if (error.response && error.response.data && error.response.data.errors) {
+				errorMessage = error.response.data.errors
+					.map((e: any) => e.msg)
+					.join(', ')
+			} else if (error instanceof Error) {
+				errorMessage = error.message
+			}
+			this.setError(errorMessage)
 			throw error
 		} finally {
 			this.setIsLoading(false)
@@ -79,10 +87,16 @@ class AuthStore {
 			this.setAuth(true)
 			this.setUser(response.data.user)
 			navigate('/')
-		} catch (error) {
-			this.setError(
-				error instanceof Error ? error.message : 'Registration failed'
-			)
+		} catch (error: Error | any) {
+			let errorMessage = 'Registration failed'
+			if (error.response && error.response.data && error.response.data.errors) {
+				errorMessage = error.response.data.errors
+					.map((e: any) => e.msg)
+					.join(', ')
+			} else if (error instanceof Error) {
+				errorMessage = error.message
+			}
+			this.setError(errorMessage)
 			throw error
 		} finally {
 			this.setIsLoading(false)
@@ -110,8 +124,8 @@ class AuthStore {
 		try {
 			const data = await AuthService.updateUser(formData)
 			localStorage.setItem('token', data.accessToken)
-			console.log(data.user);
-			
+			console.log(data.user)
+
 			this.setUser(data.user)
 			this.setAuth(true)
 		} catch (error) {

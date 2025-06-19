@@ -5,7 +5,8 @@ class UserController {
 		try {
 			const candidate = req.body
 			const result = await userService.registrationUser(candidate)
-
+			console.log('Registration result:', result);
+			
 			res.cookie('refreshToken', result.refreshToken, {
 				maxAge: 30 * 24 * 60 * 60 * 1000,
 				httpOnly: true,

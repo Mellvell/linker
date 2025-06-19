@@ -24,6 +24,13 @@ export default function Login() {
 				<div className={styles.welcomeMessage}>
 					<h1 dangerouslySetInnerHTML={{ __html: t('welcome_message') }} />
 				</div>
+				{authStore.error && (
+					<div className={styles.errorContainer}>
+						<div className={styles.errorMessage}>
+							{t(authStore.error) || authStore.error}
+						</div>
+					</div>
+				)}
 				<Form className={styles.loginForm}>
 					<h2 className={styles.rightHeading}>{t('title')}</h2>
 					<TextField

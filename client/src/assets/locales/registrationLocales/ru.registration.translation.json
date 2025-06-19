@@ -7,5 +7,6 @@
 	"button_sign_up": "Зарегистрироваться",
 	"welcome_message": "Добро пожаловать в <span>LINKER</span>.",
 	"has_account": "Уже есть аккаунт?",
-	"sign_in_link": "Войти."
+	"sign_in_link": "Войти.",
+	"loading": "Загрузка..."
 }
